@@ -1,0 +1,250 @@
+<html><head><TITLE>htmSqlInterface</TITLE></head>
+ <body text="#111111" bgcolor="#FFFFFF" link="#333399" vlink="#663366" alink="#CC0000">
+
+<!--
+Authors:        Peter Z. Kunszt
+Created:        August 2000
+
+ Copyright (C) 2000  Peter Z. Kunszt, Alex S. Szalay, Aniruddha R. Thakar
+                     The Johns Hopkins University
+
+ This program is free software; you can redistribute it and/or
+ modify it under the terms of the GNU General Public License
+ as published by the Free Software Foundation; either version 2
+ of the License, or (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with this program; if not, write to the Free Software
+ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+
+-->
+<h3>&nbsp;&nbsp;
+<font color="#7700EE">HTM SpatialIndex Class Reference</font>
+</h3>
+<img SRC="rule.gif" width="400" height="5" >
+
+
+<H2><A HREF ="#DOC.DOCU" > <IMG BORDER=0 SRC=down.gif width="36" height="36"></A>  class  htmSqlInterface  </H2><BLOCKQUOTE>
+
+htmSqlInterface class
+</BLOCKQUOTE>
+<hr>
+
+<DL>
+<TABLE BORDER>
+<DT><h3>Public Methods</h3><DD><TR><TD VALIGN=top><A HREF="#DOC.30.7"> <IMG BORDER=0 SRC=icon1.gif width="14" height="14"></A> </TD><TD><B>htmSqlInterface</B> (size_t depth = 0)<br>
+<I>Constructor</I>
+</TD></TR><TR><TD VALIGN=top><A HREF="#DOC.30.1"> <IMG BORDER=0 SRC=icon1.gif width="14" height="14"></A> <!2><A HREF="#DOC.27">HTM_ID</A> </TD><TD><B>lookupID</B> (char *)<br>
+<I>Lookup a node ID from a string command</I>
+</TD></TR><TR><TD VALIGN=top><A HREF="#DOC.30.8"> <IMG BORDER=0 SRC=icon1.gif width="14" height="14"></A> <!2><A HREF="#DOC.29">MsgStr</A> </TD><TD><B>lookupIDDiagnostic</B> (char *)<br>
+<I>Check the lookupID syntax </I>
+</TD></TR><TR><TD VALIGN=top><A HREF="#DOC.30.2"> <IMG BORDER=0 SRC=icon1.gif width="14" height="14"></A> size_t </TD><TD><B>intersect1</B> ( char*, <!2><A HREF="#DOC.28">ValueVector</A> & )<br>
+<I>Intersect function 1</I>
+</TD></TR><TR><TD VALIGN=top><A HREF="#DOC.30.3"> <IMG BORDER=0 SRC=icon1.gif width="14" height="14"></A> size_t </TD><TD><B>intersect2</B> ( char*, <!2><A HREF="#DOC.28">ValueVector</A> & )<br>
+<I>Intersect function 2</I>
+</TD></TR><TR><TD VALIGN=top><A HREF="#DOC.30.4"> <IMG BORDER=0 SRC=icon1.gif width="14" height="14"></A> size_t </TD><TD><B>circleRegion</B> ( char *, <!2><A HREF="#DOC.28">ValueVector</A> & )<br>
+<I>Request all triangles in a circular region</I>
+</TD></TR><TR><TD VALIGN=top><A HREF="#DOC.30.9"> <IMG BORDER=0 SRC=icon1.gif width="14" height="14"></A> <!2><A HREF="#DOC.29">MsgStr</A> </TD><TD><B>circleRegionDiagnostic</B> (char *)<br>
+<I>Check the circleRegion syntax </I>
+</TD></TR><TR><TD VALIGN=top><A HREF="#DOC.30.5"> <IMG BORDER=0 SRC=icon1.gif width="14" height="14"></A> size_t </TD><TD><B>convexHull</B> ( char *str, <!2><A HREF="#DOC.28">ValueVector</A> & )<br>
+<I>Request all triangles in the convex hull of a given set of 
+points</I>
+</TD></TR><TR><TD VALIGN=top><A HREF="#DOC.30.10"> <IMG BORDER=0 SRC=icon1.gif width="14" height="14"></A> <!2><A HREF="#DOC.29">MsgStr</A> </TD><TD><B>convexHullDiagnostic</B> (char *)<br>
+<I>Check convexHull Syntax </I>
+</TD></TR><TR><TD VALIGN=top><A HREF="#DOC.30.6"> <IMG BORDER=0 SRC=icon1.gif width="14" height="14"></A> size_t </TD><TD><B>domain</B> ( char *str, <!2><A HREF="#DOC.28">ValueVector</A> & )<br>
+<I>String interface for domain intersection</I>
+</TD></TR><TR><TD VALIGN=top><A HREF="#DOC.30.11"> <IMG BORDER=0 SRC=icon1.gif width="14" height="14"></A> <!2><A HREF="#DOC.29">MsgStr</A> </TD><TD><B>domainDiagnostic</B> (char *)<br>
+<I>Check the domain syntax </I>
+</TD></TR><TR><TD VALIGN=top><A HREF="#DOC.30.12"> <IMG BORDER=0 SRC=icon1.gif width="14" height="14"></A> bool </TD><TD><B>err</B> ()<br>
+<I>Test whether the call gave an error </I>
+</TD></TR><TR><TD VALIGN=top><A HREF="#DOC.30.13"> <IMG BORDER=0 SRC=icon1.gif width="14" height="14"></A> <!2><A HREF="#DOC.29">MsgStr</A> </TD><TD><B>error</B> ()<br>
+<I>Retrieve error message </I>
+</TD></TR></TABLE></DL>
+<A NAME="DOC.DOCU">
+<hr>
+ <h2> Documentation </h2>
+<BLOCKQUOTE>
+
+htmSqlInterface class.
+Interface to SQL server.
+
+
+</BLOCKQUOTE>
+<DL>
+
+<A NAME="htmSqlInterface">
+<A NAME ="DOC.30.7">
+<DT><IMG BORDER=0 SRC=icon2.gif width="14" height="14"><TT><B>  htmSqlInterface(size_t depth = 0)</B></TT>
+<DD>Constructor
+<DL></DL><P>
+<A NAME="lookupID">
+<A NAME ="DOC.30.1">
+<DT><IMG BORDER=0 SRC=icon2.gif width="14" height="14"><TT><B> <!2><A HREF="#DOC.27">HTM_ID</A>  lookupID(char *)</B></TT>
+<DD>Lookup a node ID from a string command.
+The string in the input may have one of the following forms:
+<ul>
+<li> "J2000 depth ra dec"
+<li> "CARTESIAN depth x y z"
+<li> "NAME name"
+</ul>
+The string will be evaluated depending on how many items it has.
+<DL></DL><P>
+<A NAME="lookupIDDiagnostic">
+<A NAME ="DOC.30.8">
+<DT><IMG BORDER=0 SRC=icon2.gif width="14" height="14"><TT><B> <!2><A HREF="#DOC.29">MsgStr</A>  lookupIDDiagnostic(char *)</B></TT>
+<DD>Check the lookupID syntax 
+<DL></DL><P>
+<A NAME="intersect1">
+<A NAME ="DOC.30.2">
+<DT><IMG BORDER=0 SRC=icon2.gif width="14" height="14"><TT><B> size_t  intersect1( char*, <!2><A HREF="#DOC.28">ValueVector</A> & )</B></TT>
+<DD>Intersect function 1. The string passed to this command
+can be any of the strings accepted by the circleRegion,
+convexHull or domain methods. The circleRegion string
+needs to have a prefix CIRCLE and the convexHull string
+needs to have a prefix CONVEX to be recognized.
+<p>So the accepted strings are
+<ul>
+<li> "CIRCLE J2000 depth ra dec rad"
+<li> "CIRCLE CARTESIAN depth x y z rad"
+<li> "CONVEX J2000 depth ra dec ra dec ra dec "  
+<li> "CONVEX CARTESIAN depth x y z x y z x y z "
+<li> the same domain string as in the domain() method
+</ul>
+<DL></DL><P>
+<A NAME="intersect2">
+<A NAME ="DOC.30.3">
+<DT><IMG BORDER=0 SRC=icon2.gif width="14" height="14"><TT><B> size_t  intersect2( char*, <!2><A HREF="#DOC.28">ValueVector</A> & )</B></TT>
+<DD>Intersect function 2. This only differs from the version
+above that the depth parameter is omitted. The constructor
+has to be given the depth at which the intersection will
+operate.
+<p>So the accepted strings are
+<ul>
+<li> "CIRCLE J2000 ra dec rad"
+<li> "CIRCLE CARTESIAN x y z rad"
+<li> "CONVEX J2000 ra dec ra dec ra dec "  
+<li> "CONVEX CARTESIAN x y z x y z x y z "
+<li> the same domain string as in the domain() method except
+for the depth parameter.
+</ul>
+<DL></DL><P>
+<A NAME="circleRegion">
+<A NAME ="DOC.30.4">
+<DT><IMG BORDER=0 SRC=icon2.gif width="14" height="14"><TT><B> size_t  circleRegion( char *, <!2><A HREF="#DOC.28">ValueVector</A> & )</B></TT>
+<DD>Request all triangles in a circular region.
+Given are the center coordinate and radius in arcminutes.
+The Vector to fill and its size are given back. The size
+is also the return value.
+<ul>
+<li> "J2000 depth ra dec rad"
+<li> "CARTESIAN depth x y z rad"
+</ul>
+<DL></DL><P>
+<A NAME="circleRegionDiagnostic">
+<A NAME ="DOC.30.9">
+<DT><IMG BORDER=0 SRC=icon2.gif width="14" height="14"><TT><B> <!2><A HREF="#DOC.29">MsgStr</A>  circleRegionDiagnostic(char *)</B></TT>
+<DD>Check the circleRegion syntax 
+<DL></DL><P>
+<A NAME="convexHull">
+<A NAME ="DOC.30.5">
+<DT><IMG BORDER=0 SRC=icon2.gif width="14" height="14"><TT><B> size_t  convexHull( char *str, <!2><A HREF="#DOC.28">ValueVector</A> & )</B></TT>
+<DD>Request all triangles in the convex hull of a given set of 
+points.
+The points are given in the string in the following form:
+<pre>
+" J2000 depth ra dec ra dec ra dec "  
+</pre>
+or
+<pre>
+" CARTESIAN depth x y z x y z x y z "
+" J2000 depth ra dec ra dec ra dec "  
+</pre>
+or
+<pre>
+" CARTESIAN depth x y z x y z x y z "
+</pre>
+There may be as many points ra, dec or x,y,z as you want.
+
+<p> The vector to be filled will be cleared by the routine.
+<DL></DL><P>
+<A NAME="convexHullDiagnostic">
+<A NAME ="DOC.30.10">
+<DT><IMG BORDER=0 SRC=icon2.gif width="14" height="14"><TT><B> <!2><A HREF="#DOC.29">MsgStr</A>  convexHullDiagnostic(char *)</B></TT>
+<DD>Check convexHull Syntax 
+<DL></DL><P>
+<A NAME="domain">
+<A NAME ="DOC.30.6">
+<DT><IMG BORDER=0 SRC=icon2.gif width="14" height="14"><TT><B> size_t  domain( char *str, <!2><A HREF="#DOC.28">ValueVector</A> & )</B></TT>
+<DD>String interface for domain intersection.
+The domain should be given in the following form:
+<pre>
+DOMAIN depth
+nConvexes
+nConstraints in convex 1
+x y z d
+x y z d
+.
+.
+x y z d
+nConstraints in convex 2
+x y z d
+x y z d
+.
+.
+x y z d
+.
+.
+.
+nConstrinats in convex n
+x y z d
+x y z d
+.
+.
+x y z d
+<pre>
+
+<p>
+The numbers need to be separated by whitespace (newlines are allowed).
+<DL></DL><P>
+<A NAME="domainDiagnostic">
+<A NAME ="DOC.30.11">
+<DT><IMG BORDER=0 SRC=icon2.gif width="14" height="14"><TT><B> <!2><A HREF="#DOC.29">MsgStr</A>  domainDiagnostic(char *)</B></TT>
+<DD>Check the domain syntax 
+<DL></DL><P>
+<A NAME="err">
+<A NAME ="DOC.30.12">
+<DT><IMG BORDER=0 SRC=icon2.gif width="14" height="14"><TT><B> bool  err()</B></TT>
+<DD>Test whether the call gave an error 
+<DL></DL><P>
+<A NAME="error">
+<A NAME ="DOC.30.13">
+<DT><IMG BORDER=0 SRC=icon2.gif width="14" height="14"><TT><B> <!2><A HREF="#DOC.29">MsgStr</A>  error()</B></TT>
+<DD>Retrieve error message 
+<DL></DL><P></DL>
+<hr>
+ <DL><DT><B>This class has no child classes.</B></DL>
+<DL></DL><P><I><A HREF="aindex.html"> alphabetic index</A></I>  <I><A HREF="HIER.html"> hierarchy of classes</A></I><P><hr>
+
+<img SRC="rule.gif" width="400" height="5" >
+<h6>
+&copy;
+<A HREF = "http://www.sdss.jhu.edu/ScienceArchive/copyright.html">
+Copyright 2000
+</A>
+Peter Z. Kunszt, Alex S. Szalay, Aniruddha R. Thakar
+@ The Johns Hopkins University under the <a href="http://www.gnu.org/copyleft/gpl.txt">GNU GENERAL PUBLIC LICENSE</a><br>
+
+<a href="mailto:kunszt@pha.jhu.edu">Peter Z. Kunszt</a>,
+<br>
+</h6>
+
+</body>
+</html>
+
+<P Align=right><I>generated by <A HREF="http://www.zib.de/Visual/software/doc++/index.html">doc++</A></I>
+</BODY>

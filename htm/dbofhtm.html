@@ -1,0 +1,136 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=iso-8859-1">
+<title>HTM DB functions</title>
+<link href="styles/skystyles.css" rel="stylesheet" type="text/css">
+<link href="styles/tabs.css" rel="stylesheet" type="text/css">
+<style type="text/css">
+<!--
+.boldred {
+	color: #CC3300;
+	font-weight: bold;
+}
+-->
+</style>
+</head><body>
+<!-- George 1.0 -->
+
+<!----------------------------------------   TABS -->
+<div class="tabs">
+  <ul>
+    <li><a href="./index.html"><span>HTM</span></a></li>
+	<li id="current"><a href="./dbofhtm.html"><span>dbo.fHTM</span></a></li>
+	<li><a href="./HtmPrimer/tut_primer.html"><span>Spatial Constructs </span></a></li>
+    <li><a href="./HtmPrimer/tut_covermap.html"><span>Covermap</span></a></li>
+    <li><a href="./HtmPrimer/tut_queries.html"><span>Queries</span></a></li>
+	<li><a href="./HtmPrimer/regiongrammar.html"><span>Grammar</span></a></li>
+	<li><a href="./HtmPrimer/tut_install.html"><span>Installation</span></a></li>
+	 <li><a href="./HtmAPI/html/index.html"><span>API</span></a></li>
+	 <li><a href="../default.aspx"><span>Home</span></a></li>
+
+</ul></div>
+<!----------------------------------------   END TABS -->
+<h1>dbo Functions </h1>
+
+
+<h2>Scalar Valued Functions</h2>
+<table width="720px">
+<tr>
+   <td width="160" valign="top"><div class="fragment">
+    <pre class="fragment">dbo.fHtmVersion()</pre></td>
+   <td width="497" valign="top">A string with the version information.</td>
+</tr>
+<tr>
+   <td><div class="fragment">
+   <pre class="fragment">dbo.fHtmEq(float RA, float DEC)</pre></td>
+   <td valign="top">HtmID of the iven location as a BIGINT </td>
+</tr>
+<tr>
+   <td><div class="fragment">
+   <pre class="fragment">dbo.fHtmGetString(bigint hid)</pre></td>
+   <td valign="top">String representation of the given HtmID.</td>
+</tr>
+<tr>
+   <td valign="top"><div class="fragment">
+   <pre class="fragment">dbo.fHtmCoverRegionError(nvarchar(max) regionSpec)</pre></td>
+   <td valign="top">String explaining the syntax error in the region specification. 
+   If there is no syntax error, this function returns &quot;OK&quot; . </td>
+</tr>
+<tr>
+   <td valign="top"><div class="fragment">
+   <pre class="fragment">dbo.fDistanceEq(<br>  float RA1, float DEC1, float RA2, float DEC2)</pre></td>
+   <td valign="top">The angular distance in arc minutes between the two given locations.
+   The input parameters are in degrees. </td>
+</tr>
+<tr>
+   <td valign="top"><div class="fragment">
+    <pre class="fragment">dbo.fHtmVersion(<br>  float X1, float Y1, float Z1,<br>  float X2, float Y2, float Z2)</pre></td>
+   <td valign="top">The angular distance in arc minutes between the two given locations. The parameters<br>
+    (x, y, z) must be normalized.</td>
+</tr>
+</table>
+ <h2>Table Valued Functions</h2>
+ <table width="720px">
+<tr>
+   <td width="160" valign="top"><div class="fragment">
+    <pre class="fragment">dbo.fHtmCoverBinaryAdvanced(varbinary(max) bin)</pre></td>
+   <td width="497" valign="top">The covermap of the region specified
+   by the binary object </td>
+</tr>
+<tr>
+   <td valign="top"><div class="fragment">
+   <pre class="fragment">dbo.fHtmCoverCircleEq(float RA, float DEC, float radius)</pre></td>
+   <td valign="top">The covermap of the given Halfspace specified as a circle with the radius given in minutes of arc </td>
+</tr>
+<tr>
+   <td valign="top"><div class="fragment">
+   <pre class="fragment">dbo.fHtmCoverCircleXyz(<br>  float x, float y, float z, float radius)</pre></td>
+   <td valign="top">The covermap of the given Halfspace specified as a circle with the radius given in minutes of arc.</td>
+</tr>
+<tr>
+   <td valign="top"><div class="fragment">
+   <pre class="fragment">dbo.fHtmCoverRegion(nvarchar(max) regionSpec)</pre></td>
+   <td valign="top">The covermap of the specified region. If a null table is returned, it can be because the region is null,
+    or there was a syntax error. It is good to use the scalar function fHtmGetRegionError</td>
+</tr>
+<tr>
+   <td valign="top"><div class="fragment">
+   <pre class="fragment">dbo.fHtmCoverRegionAdvanced(nvarchar(max) regionSpec)</pre></td>
+   <td valign="top">The covermap of the specified region similar, but with an extra
+   <em>innerFlag</em> column.</td>
+</tr>
+<tr>
+   <td valign="top"><div class="fragment">
+    <pre class="fragment">dbo.fHtmCoverRegionSelect(<br>  nvarchar(max) region, nvarchar(max) type)</pre></td>
+   <td valign="top">The requested type of covermap. Type is one of the following three: 'full', 'outer', 'partial' </td>
+</tr>
+<tr>
+   <td valign="top"><div class="fragment">
+    <pre class="fragment">dbo.fHtmEqToXyz(float RA, float DEC)</pre></td>
+   <td valign="top">A table of X Y Z columns and one row. </td>
+</tr>
+<tr>
+   <td valign="top"><div class="fragment">
+    <pre class="fragment">dbo.fHtmGetCenterPoint(bigint HtmID)</pre></td>
+   <td valign="top">A table of X Y Z columns and one row. Center of the trixel with given HtmID </td>
+</tr><tr>
+   <td valign="top"><div class="fragment">
+    <pre class="fragment">dbo.fHtmGetCornerPoints(bigint HtmID)</pre></td>
+   <td valign="top">A table of X Y Z columns and three rows. The three corners of the trixel with given HtmID </td>
+</tr><tr>
+   <td valign="top"><div class="fragment">
+    <pre class="fragment">dbo.fHtmXyzToEq(float X, float Y, float Z)</pre></td>
+   <td valign="top">A table of RE DEC columns and one row. Inverse of fHtmEqToXyz </td>
+</tr>
+<tr>
+  <td valign="top">&nbsp;</td>
+  <td valign="top">&nbsp;</td>
+</tr>
+</table>
+<!-- #BeginLibraryItem "/htm/Library/lastchangefooter.lbi" -->
+<! ----------- FOOTER -->
+<hr size="1">
+<address style="align: right;">
+<small> Last update May 29, 2007  Gy&ouml;rgy Fekete <font color="red">version 3.1.2</font> </small>
+</address>
+<!-- #EndLibraryItem --></body>
+</html>

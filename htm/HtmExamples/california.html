@@ -1,0 +1,103 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=iso-8859-1">
+<title>California</title>
+<link href="../styles/skystyles.css" rel="stylesheet" type="text/css">
+<link href="../styles/tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- George 1.0 --><!-- #BeginLibraryItem "/htm/Library/examplenav.lbi" -->
+<!----------------------------------------   TABS -->
+<div class="tabs">
+  <ul>
+    <li><a href="../index.html"><span>HTM<br />&nbsp;</span></a></li>
+	<li><a href="sdssRegions.html"><span>SDSS Regions<br />&nbsp;</span></a></li>
+    <li><a href="tinydisk.html"><span>Disk<br />&nbsp;</span></a></li>
+	<li><a href="ColoradoPolygon.html"><span>Colorado<br />Polygon</span></a></li>
+	<li><a href="ColoradoRectangle.html"><span>Colorado<br />Rectangle</span></a></li>
+	<li><a href="cube.html"><span>Cube<br />&nbsp;</span></a></li>
+	<li><a href="masks.html"><span>Mask<br />&nbsp;</span></a></li>
+	<li><a href="utahrects.html"><span>Utah<br />&nbsp;</span></a></li>
+	<li><a href="california.html"><span>California<br />&nbsp;</span></a></li>
+	<li><a href="testRegions.html"><span>Tests<br />&nbsp;</span></a></li>
+	<li><a href="extremeRegions.html"><span>Extreme<br />&nbsp;</span></a></li>
+	<li><a href="georgiachull.html"><span>Chull<br />&nbsp;</span></a></li>
+</ul></div>
+<!----------------------------------------   END TABS -->
+<!-- #EndLibraryItem --><h1>California</h1>
+<p>
+<table width="100%"  border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="37%"><img src="../images/california.png" 
+alt="" name="example" width="320" height="240" id="example" /></td>
+<td width="63%" align="left" valign="top">
+Two shapes roughly outlining California. In the picture below there
+are too many yellow lines, each of which is a depiction of a
+halfspace. The normal form reveals, that there are  13
+halfspaces in this region. The specification is a union of a rectangle
+and the convex hull of a pointset.
+<td>
+</tr>
+<tr><td>&nbsp;</td>
+<tr>
+<td width="37%"><img src="../images/californiaMap.png" 
+alt="" name="example" width="320" height="320" id="example" /></td>
+<td width="63%" align="left" valign="top">
+Shown here rotated and aligned with a map.
+</td>
+</tr>
+</table>
+<p>&nbsp;</p>
+<h2>SPECIFICATION</h2>
+<div class="fragment">
+<pre class="fragment">
+region
+   rect latlon 39 -125 42 -120
+   chull latlon 39 -124 39 -120 35 -114.6 34.3 -114.1 32.74 -114.5 
+       32.53 -117.1 33.2 -119.5 34 -120.5 34.57 -120.65 36.3 -121.9 36.6
+      -122.0 38 -123.03
+</pre>
+</div>
+<h3>NORMAL FORM</h3>
+<div class="fragment">
+<pre class="fragment">
+REGION CONVEX<br />
+0 0 1 0.62932039104983739
+0 0 -1 -0.66913060635885824
+0.81915204428899169 -0.57357643635104616 0 0
+-0.86602540378443871 0.49999999999999978 0 0
+CONVEX
+0.89308671536223039 -0.21799162471045355 0.39354259032485828 0
+0.79948071926712 -0.00069136692621743891 0.600691352969145 0
+0.52188865132412365 0.30397031727287555 0.79701586046710171 0
+0.147727543839837 0.5249540377410824 0.83821228280811022 0
+-0.84375775240707662 0.5076498271159412 0.17425414853630666 0
+-0.904246387008799 0.093056403834248042 -0.4167480981204 0
+-0.80713903337166959 -0.0808226102265135 -0.58480277571504369 0
+-0.33361172406513495 -0.5338903613143523 -0.77695836417527464 0
+
+</pre></div>
+<h2>COVERMAP</h2>
+<div class="fragment"><pre class="fragment">
+15277198671872, 15278272413695
+15298673508352, 15300820991999
+15301089427456, 15302968475647
+15303236911104, 15305115959295
+15306189701120, 15308337184767
+15310753103872, 15311021539327
+15328738279424, 15329006714879
+15329275150336, 15329812021247
+15331154198528, 15331422633983
+15332227940352, 15332496375807
+15350213115904, 15350749986815
+15351018422272, 15351286857727
+15384572854272, 15384841289727
+</pre>
+</div>
+<p>&nbsp;</p>
+<!-- #BeginLibraryItem "/Library/gyurifooter.lbi" -->
+<! ----------- FOOTER -->
+<hr size="1">
+<address style="align: right;">
+<small> Last update March 29, 2007  Gy&ouml;rgy Fekete <font color="red">version 3.1.2</font> </small>
+</address>
+<!-- #EndLibraryItem --></body>
+</html>

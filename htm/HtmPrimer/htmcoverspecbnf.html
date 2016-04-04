@@ -1,0 +1,164 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>Region Specification Language</title>
+</head>
+<body>
+<table width="1024"  border="0" cellspacing="0" cellpadding="0">
+<tr>
+  <TD>&nbsp;</TD>
+  <TD width="85%" align="left" valign="top"><h2><font face="Verdana, Arial, Helvetica, sans-serif">Region Specification Language</font></h2> 
+    </h2></TD>
+</tr>
+  <tr>
+<td width="15%" align="left" valign="top"></table>
+<!-- #BeginLibraryItem "/Library/leftnavi.lbi" -->
+<font face="Verdana, Arial, Helvetica, sans-serif">
+<table width="154"   border="0" align="left" cellpadding="0" cellspacing="0">
+  <tr>
+    <td width="147"  align="left"><font size="-1"><a href="index.html">Main</a></font>   </td>
+  </tr>
+  <tr>
+    <td><font size="-1" face="Verdana, Arial, Helvetica, sans-serif"><a href="htmcoverspecbnf.html">Grammar</a></font></td>
+  </tr>
+  
+  <tr><td><font size="-1"><a href="downloads.html">Downloads</a></font></td>
+  </tr>
+  <tr><td><font size="-1"><a href="ExamplesYukon/tinydisk.html">Examples</a></font></td>
+  </tr>
+  <tr>
+    <td><font size="-1"><a href="YukonNotes.html">Yukon Notes</a></font>	</td>
+  </tr>
+</table>
+</font>
+<!-- #EndLibraryItem --><table width="100%"  border="0" cellspacing="0" cellpadding="0"></td>
+ <tr>   <td width="80%" align="left" valign="top">
+	  <p><font face="Verdana, Arial, Helvetica, sans-serif"><strong>Notation</strong></font></p>
+	  <p><font face="Courier New, Courier, mono">{...}*</font> means 0 or more instances of the syntax element between the braces.<br />
+	    <font face="Courier New, Courier, mono">{...}2</font> means exactly 2 instances of the syntax element between the braces.<br />
+	    <font face="Courier New, Courier, mono">{...}3+</font> means 3 or more instances of the syntax element between the braces.<br />
+		<font face="Courier New, Courier, mono">R</font> is degrees in arcminutes.<br />
+		<font face="Courier New, Courier, mono">D</font> is a real number between -1 and 1<br />
+	    </p>
+      </td></tr><tr>
+	  <td><table width="100%">
+ 	<! ------------REGION----------------> 
+	  <tr>
+	  <td width="10%">regionSpec</td>
+	  <td width="5%">&rarr;</td>
+	  <td width="85%"><font face="Courier New, Courier, mono">REGION {areaSpec}* | areaSpec </font></td>
+	  </tr>
+ <tr>
+	  <td width="10%">areaSpec</td>
+	  <td width="5%">&rarr;</td>
+	  <td width="85%"><font face="Courier New, Courier, mono">circleSpec | rectSpec | polySpec | hullSpec | convexSpec </font></td>
+	  </tr> <tr>
+	  <td width="10%">convexSpec</td>
+	  <td width="5%">&rarr;</td>
+	  <td width="85%"><font face="Courier New, Courier, mono">CONVEX J2000 {ra dec D}*</font></td>
+	  </tr>
+	  <tr>
+	  <td width="10%">&nbsp;</td>
+	  <td width="5%">&nbsp;</td>
+	  <td width="85%"><font face="Courier New, Courier, mono">| CONVEX LATLON {lat lon D}*</font></td>
+	  </tr>
+
+	  <tr>
+	  <td width="10%">&nbsp;</td>
+	  <td width="5%"></td>
+	  <td width="85%"><font face="Courier New, Courier, mono">| CONVEX CARTESIAN {x y z D}*</font></td>
+	  </tr>
+	 <tr>
+	  <td width="10%">&nbsp;</td>
+	  <td width="5%"></td>
+	  <td width="85%"><font face="Courier New, Courier, mono">| CONVEX {x y z D}*</font></td>
+	  </tr>
+	 
+	  <td width="10%">&nbsp;</td>
+	  <td width="5%">&nbsp;</td>
+	  <td width="85%"><font face="Courier New, Courier, mono">| <em>null</em></font></td>
+	  </tr>
+
+	 <! -END->
+	 <! ------------RECTANGLE----------------> 
+	  <tr>
+	  <td width="10%">rectSpec</td>
+	  <td width="5%">&rarr;</td>
+	  <td width="85%"><font face="Courier New, Courier, mono">RECT J2000 {ra dec}2</font></td>
+	  </tr>
+
+	  <tr>
+	  <td width="10%">&nbsp;</td>
+	  <td width="5%">&nbsp;</td>
+	  <td width="85%"><font face="Courier New, Courier, mono">| RECT LATLON {lat lon}2</font></td>
+	  </tr>
+
+	  <tr>
+	  <td width="10%">&nbsp;</td>
+	  <td width="5%"></td>
+	  <td width="85%"><font face="Courier New, Courier, mono">| RECT CARTESIAN {x y z }2</font></td>
+	  </tr>
+
+	 <! -->
+<! ------------CIRCLE----------------> 
+	  <tr>
+	  <td width="10%">circleSpec</td>
+	  <td width="5%">&rarr;</td>
+	  <td width="85%"><font face="Courier New, Courier, mono">CIRCLE J2000 ra dec R</font></td>
+	  </tr>
+
+	  <tr>
+	  <td width="10%">&nbsp;</td>
+	  <td width="5%">&nbsp;</td>
+	  <td width="85%"><font face="Courier New, Courier, mono">| CIRCLE LATLON lat lon R</font></td>
+	  </tr>
+
+	  <tr>
+	  <td width="10%">&nbsp;</td>
+	  <td width="5%"></td>
+	  <td width="85%"><font face="Courier New, Courier, mono">| CIRCLE CARTESIAN x y z R</font></td>
+	  </tr>
+<! -- end >
+ 	<! ------------Convex Hull---------------> 
+	  <tr>
+	  <td width="10%">hullSpec</td>
+	  <td width="5%">&rarr;</td>
+	  <td width="85%"><font face="Courier New, Courier, mono">CHULL J2000 {ra dec}3+</font></td>
+	  </tr>
+
+	  <tr>
+	  <td width="10%">&nbsp;</td>
+	  <td width="5%">&nbsp;</td>
+	  <td width="85%"><font face="Courier New, Courier, mono">| CHULL LATLON {lat lon}3+</font></td>
+	  </tr>
+
+	  <tr>
+	  <td width="10%">&nbsp;</td>
+	  <td width="5%"></td>
+	  <td width="85%"><font face="Courier New, Courier, mono">| CHULL CARTESIAN {x y z}3+</font></td>
+	  </tr>
+	  <tr>
+	    <td>&nbsp;</td>
+	    <td></td>
+	    <td>&nbsp;</td>
+	    </tr>
+	  <tr>
+	    <td>&nbsp;</td>
+	    <td></td>
+	    <td>&nbsp;</td>
+	    </tr>
+	  <tr>
+	    <td>&nbsp;</td>
+	    <td></td>
+	    <td>&nbsp;</td>
+	    </tr>
+
+	 <! -END->
+
+	  
+	  </table></td>
+  </tr>
+</table>
+</body>
+</html>

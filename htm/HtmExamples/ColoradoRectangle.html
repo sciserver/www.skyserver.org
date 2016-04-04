@@ -1,0 +1,95 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=iso-8859-1">
+<title>Colorado Rectangle</title>
+<link href="../styles/skystyles.css" rel="stylesheet" type="text/css">
+<link href="../styles/tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- George 1.0 --><!-- #BeginLibraryItem "/htm/Library/examplenav.lbi" -->
+<!----------------------------------------   TABS -->
+<div class="tabs">
+  <ul>
+    <li><a href="../index.html"><span>HTM<br />&nbsp;</span></a></li>
+	<li><a href="sdssRegions.html"><span>SDSS Regions<br />&nbsp;</span></a></li>
+    <li><a href="tinydisk.html"><span>Disk<br />&nbsp;</span></a></li>
+	<li><a href="ColoradoPolygon.html"><span>Colorado<br />Polygon</span></a></li>
+	<li><a href="ColoradoRectangle.html"><span>Colorado<br />Rectangle</span></a></li>
+	<li><a href="cube.html"><span>Cube<br />&nbsp;</span></a></li>
+	<li><a href="masks.html"><span>Mask<br />&nbsp;</span></a></li>
+	<li><a href="utahrects.html"><span>Utah<br />&nbsp;</span></a></li>
+	<li><a href="california.html"><span>California<br />&nbsp;</span></a></li>
+	<li><a href="testRegions.html"><span>Tests<br />&nbsp;</span></a></li>
+	<li><a href="extremeRegions.html"><span>Extreme<br />&nbsp;</span></a></li>
+	<li><a href="georgiachull.html"><span>Chull<br />&nbsp;</span></a></li>
+</ul></div>
+<!----------------------------------------   END TABS -->
+<!-- #EndLibraryItem --><h1>Colorado Rectangle </h1>
+<p>
+<table width="100%"  border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="37%"><img src="../images/coloradoConvexRect.png" alt="" name="example" width="320" height="240" id="example" /></td>
+<td width="63%" align="left" valign="top">
+This convex consists of a rectangle limited by equal lines of latitude and two great circles.
+</td>
+</tr>
+</table>
+<p>&nbsp;</p>
+<h2>SPECIFICATION</h2>
+<div class="fragment">
+<pre class="fragment">
+ RECT LATLON 37 -109.55 41 -102.05
+</pre>
+</div>
+<h2>NORMAL FORM</h2>
+<div class="fragment">
+<pre class="fragment">
+REGION  CONVEX
+0 0 1 0.60181502315204827
+0 0 -1 -0.65605902899050728
+0.94234983075993228 -0.33462934190941329 0 0
+-0.97796579112795223 0.20876520635268361 0 0
+</pre>
+</div>
+<h2>C# CODE (snippet) </h2>
+<div class="fragment">
+<pre class="fragment">
+Region reg = Parser.compile(&quot;RECT LATLON 37 -109.55  41 -102.05&quot;);
+List&lt;Int64Pair&gt; rangelist = Cover.HidRange(reg); // returns ALL</pre>
+</div>
+<h2>COVERMAP</h2>
+<table width="100%"  border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="37%"><img src="../images/ColoradoRectHtm.png" alt="" name="example" width="240" height="200" id="example" /></td>
+    <td width="63%" align="left" valign="top">&nbsp; </td>
+    
+  </tr>
+<tr>
+<td align="center">Reds denote <em>full </em>trixels </td>
+<td>&nbsp;</td><TD align="center">&nbsp;</TD>
+</tr>
+<tr>
+<td valign="top">
+
+<div class="fragment"><pre class="fragment">
+14367202476032, 14367470911487
+15264313769984, 15265387511807
+15265655947264, 15266461253631
+15266729689088, 15268608737279
+15311558410240, 15312632152063
+15312900587520, 15313705893887
+15314779635712, 15315853377535
+</pre>
+</div></td>
+<td>&nbsp;  </td>
+<td>&nbsp;</td>
+ 
+</tr>
+</table>
+<p>&nbsp;</p>
+<!-- #BeginLibraryItem "/Library/gyurifooter.lbi" -->
+<! ----------- FOOTER -->
+<hr size="1">
+<address style="align: right;">
+<small> Last update March 29, 2007  Gy&ouml;rgy Fekete <font color="red">version 3.1.2</font> </small>
+</address>
+<!-- #EndLibraryItem --></body>
+</html>

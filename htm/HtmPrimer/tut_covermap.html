@@ -1,0 +1,145 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=iso-8859-1">
+<title>HTM Covermap</title>
+<link href="../styles/skystyles.css" rel="stylesheet" type="text/css">
+<link href="../styles/tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- George 1.0 -->
+<!----------------------------------------   TABS -->
+<div class="tabs">
+  <ul>
+    <li><a href="../index.html"><span>HTM</span></a></li>
+    <li><a href="./tut_primer.html"><span>Spatial Constructs</span></a></li>
+    <li id="current"><a href="../HtmPrimer/tut_covermap.html"><span>Covermap</span></a></li>
+    <li><a href="../HtmPrimer/tut_queries.html"><span>Queries</span></a></li>
+   
+	<li><a href="../HtmPrimer/regiongrammar.html"><span>Grammar</span></a></li>
+	<li><a href="../HtmPrimer/tut_install.html"><span>Installation</span></a></li>
+	 <li><a href="../HtmAPI/html/index.html"><span>API</span></a></li>
+	  <li><a href="../../default.aspx"><span>Home</span></a></li>
+</ul></div>
+<!----------------------------------------   END TABS -->
+<h1>Covermap</h1>
+<h2><a class="anchor" name="chegm"> 
+
+Trixels</a> (I want to skip this, and jump to more <a class="el" href="../HtmExamples/tinydisk.html">EXAMPLES</a> with pictures). </h2>
+ <p>
+ A set of trixels that covers a region is called a covermap.
+ Trixels that are completely inside
+ are called "full" (shown with a salmon-red outline) and the rest are called "partial"</p>
+ <center>
+ <table><tr>
+ <td><img src="../images/circlecover_annotated.png" width="240" height="200" >
+ </td>
+ <td><img src="../images/tinycirclecover.png" width="220" height="200" ></td>
+ 
+ </tr>
+ <tr>
+   <td align="center">(a) Covermap of a large circle<br />
+     16 trixels</td>
+ <td align="center">(b) Covermap of a small circle</td>
+  </tr>
+ </table>
+<br />
+ </center>
+<p> The computation of a covermap was designed so that the number of <a href="tut_htm.html#HtmID">HtmID</a> ranges are 
+within a range of numbers. In the above two examples, the number of triangles that cover both the large and small
+circle are between 10 and 20.
+We'll explain what "HtmID range"
+means. In the large covermap, the two trixels with the lowest and highest HtmID's are each marked
+with a yellow dot. On the smaller covermap, the trixels are also smaller, and so the names, and HtmID's
+have more digits in them. So, one trick to compare apples to apples is to normalize the HtmIDs
+to a fixed level, and recast each trixel as a range of <a href="tut_htm.html#HtmID">HtmID</a>'s at that given level.
+In our case, that would be level 20 for practical considerations. In our example the two covermaps
+have several triangles, the highest and lowest IDs and the ranges of level 20 IDs are in the table below
+<p>
+<table border="0" cellpadding="2" cellspacing="2">
+<tr align="right">
+<td><strong>HtmID</strong></td>
+<td align="left"><strong>Htm name</strong></td>
+<td><strong>HtmIDstart</strong></td>
+<td><strong>HtmIDend</strong></td>
+</tr>
+<tr align="right">
+   <td> 836052 </td>
+   <td align="left">N030013110</td>
+   <td>14026624991232</td>
+   <td>14026641768447</td>
+</tr>
+<tr align="right">
+<td>836095</td>
+<td align="left">N030013333</td>
+<td>14027346411520</td>
+<td>14027363188735</td>
+</tr>
+
+<tr align="right">
+<td>13377342</td>
+<td align="left">N03001330332</td>
+<td>14027159764992</td>
+<td>14027160813567</td>
+</tr>
+
+<tr align="right">
+<td>13377317</td>
+<td align="left">N03001330211</td>
+<td>14027133550592</td>
+<td>14027134599167</td>
+</tr>
+</table>
+</p>
+<p>
+The first two belong to the large circle, the last two to the small circle.
+You may note, that bringing these ID to a range of level 20 IDs (start, end values) keeps the
+numbers in the same order of magnitude.
+So how we represent a <em>covermap</em> is by the list of (start,end) value pairs of ID ranges
+that represents each trixel. To make matters even more favorable, this scheme allows trivial
+compression of this representation, because very often (though not everywhere) trixels near each other have similar IDs.
+The convenient upshot of this is, that if two consecutive (start, end) ranges follow one
+another without any gaps in the numbers, they can be represented as a single range of (start, end) values.
+In particular, the 16 trixels in the large covermap can bre represented by only 9 ranges.
+</p>
+<p>Let's look at a specific example. Assume, that there is a table-valued function called
+'fHtmCoverRegion' that returns a table of (start, end) values when given a region specification
+using the language described by the <a href="regiongrammar.html">Region Specification Language</a>.
+The circle's center is at
+<blockquote>Lat=+39.3008, Lon=-76.610616 </blockquote>
+with a 30 arc-minute (roughly 30 mile) radius. Then the table is computed by the following select
+statement </p>
+(we make no distinction between full and partial trixels here, as that information is lost).
+<div class="fragment">
+<pre class="fragment">select * from dbo.fHtmCoverRegion('CIRCLE LATLON 39.3008 -76.610616 30') 
+HtmIDStart           HtmIDEnd
+-------------------- --------------------
+14026624991232       14026658545663
+14026675322880       14026692100095
+14026725654528       14026742431743
+14026759208960       14026775986175
+14026960535552       14026977312767
+14026994089984       14027027644415
+14027094753280       14027161862143
+14027245748224       14027262525439
+14027312857088       14027363188735
+&nbsp;
+(9 row(s) affected) </pre></div> 
+Note, that there are only 9 rows representing 16 trixels, as some adjacent ranges have 
+been merged into one. There are other functions that will allow the treatment
+of full and partial trixels, but that's beyond the scope of this primer. I will say that, in
+the above example,
+the reason for the  covermap of fully contained trixels in (c) looks different from those
+is (a), is that the algorithm for providing the best cover is based on a constraint
+that  limits the number of rows (HtmID start-end ranges). Since only full trixels
+are of interest in computing (c), more room is available for the covermap, hence the
+greater resolution of the full (salmon-colored) trixesl. 
+<p>Please see more examples of covermaps <a class="el" href="../HtmExamples/tinydisk.html">here</a>. 
+To find out more about how tables like this can be used for spatial searches, follow the link below
+to the next topic. 
+<h3><a href="./tut_queries.html"> Next: Queries</a></h3>
+<!-- #BeginLibraryItem "/htm/Library/lastchangefooter.lbi" -->
+<! ----------- FOOTER -->
+<hr size="1">
+<address style="align: right;">
+<small> Last update May 29, 2007  Gy&ouml;rgy Fekete <font color="red">version 3.1.2</font> </small>
+</address>
+<!-- #EndLibraryItem --></body>
+</html>

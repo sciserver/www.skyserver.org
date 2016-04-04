@@ -1,0 +1,257 @@
+.code { font-size: 10pt ; font-family ; Courior, Fixed }
+.small {font-size: 9pt}
+
+.hi
+{
+    FONT-FAMILY:Verdana;
+    FONT-SIZE: 9pt;
+    COLOR: #ffffff;
+    BACKGROUND-COLOR:#555555;
+    FONT-WEIGHT:normal;
+    line-height:20px;
+}
+.hi A:Hover
+{
+	color:#ffffff;
+}
+.lo
+{
+    FONT-FAMILY:Verdana;
+    FONT-SIZE: 9pt;
+    COLOR: #CDE5AD;
+    font-weight:normal;
+    line-height:20px;
+}
+.lo A:Hover
+{
+	color:#ffffff;
+}
+.tiny {font-size: 7pt}
+
+.navi {
+	background :#313131;
+	align : center
+}
+.navipull {
+	background : #000033;
+	align : center
+}
+
+.navlink
+{
+	font-weight: normal;
+	font-size: 7pt;
+	color: #ddddaa;
+	line-height: 12px;
+	FONT-FAMILY: verdana,helvetica,sans-serif;
+}
+
+.navlink: A:hover
+{
+	font-weight:bolder;
+	font-size:6.75pt;
+	color: #ffffff;
+	background: yellow;
+}
+
+.Menu {
+  color:yellow;
+}
+
+A
+{
+    COLOR: #CDE5AD;
+    FONT-FAMILY: verdana,helvetica,sans-serif;
+    TEXT-DECORATION: none
+}
+A:hover
+{
+    COLOR: #ffffff;
+}
+
+.title { 
+    COLOR: #CDE5AD;
+    FONT-FAMILY: verdana,helvetica,sans-serif;
+    FONT-SIZE: 18pt;
+    FONT-WEIGHT: bold;
+} 
+img {border="0"} 
+
+.MenuBox {
+	border-top: 1px solid #000000;
+	border-left: 1px solid #000000;
+	border-right: 1px solid #000000;
+}
+
+
+BODY
+{
+    BACKGROUND-COLOR: #252525;
+}
+
+
+P
+{
+    COLOR: #ffffff;
+    FONT-FAMILY: verdana,helvetica,sans-serif;
+    FONT-SIZE:10pt;
+}
+TD
+{
+    COLOR: #ffffff;
+    FONT-FAMILY: verdana,helvetica,sans-serif;
+    FONT-SIZE:10pt;
+}
+H1
+{
+    COLOR: #C3C3C3;
+    FONT-FAMILY: verdana,helvetica,sans-serif;
+    FONT-SIZE: 16pt
+}
+H2
+{
+    COLOR: #ffffff;
+    FONT-SIZE: 13pt;
+    FONT-FAMILY: verdana,helvetica,sans-serif;
+}
+H3
+{
+    COLOR: #ffffff;
+    FONT-FAMILY: verdana,helvetica,sans-serif;
+    FONT-SIZE: 12pt
+}
+H4
+{
+    COLOR: #ffffff;
+    FONT-FAMILY: verdana,helvetica,sans-serif;
+    FONT-SIZE: 11pt;
+}
+H5
+{
+    COLOR: #ffffff;
+    FONT-FAMILY: verdana,helvetica,sans-serif;
+    FONT-SIZE: 11pt;
+}
+H6
+{
+    COLOR: #ffffff;
+    FONT-FAMILY: verdana,helvetica,sans-serif;
+    FONT-SIZE: 11pt;
+}
+
+SPAN
+{
+    COLOR: #ffffff;
+    FONT-FAMILY: verdana,helvetica,sans-serif
+}
+EM
+{
+    COLOR: #ffff00;
+    FONT-WEIGHT: 800
+}
+
+.sml
+{
+    FONT-SIZE: 8pt
+}
+.med
+{
+    FONT-SIZE: 10pt
+}
+.lrg
+{
+    FONT-SIZE: 12pt
+}
+
+
+.thi
+{
+    FONT-FAMILY:Times New Roman;
+    FONT-SIZE: 14pt;
+    COLOR: #CDE5AD;
+    font-weight:bold;
+}
+.tlo
+{
+    FONT-FAMILY:Times New Roman;
+    FONT-SIZE: 13pt;
+    COLOR: #CDE5AD;
+    font-weight:bold;
+}
+.s
+{
+    BACKGROUND-COLOR: #552255;
+    COLOR: #ddddff
+}
+.t
+{
+    BACKGROUND-COLOR: #333366;
+    COLOR: #ddddff
+}
+.b
+{
+    BACKGROUND-COLOR: #000060;
+    COLOR: #ddddff
+}
+.h
+{
+    BACKGROUND-COLOR: #006060;
+    COLOR: #ddddff
+}
+.tsml
+{
+    BACKGROUND-COLOR: #333366;
+    COLOR: #ddddff;
+    FONT-SIZE: 8pt;
+    FONT-WEIGHT:normal;
+}
+.bsml
+{
+    BACKGROUND-COLOR: #000060;
+    COLOR: #ddddff;
+    FONT-SIZE: 8pt;
+    FONT-WEIGHT:normal;
+}
+.hsml
+{
+    BACKGROUND-COLOR: #006060;
+    COLOR: #ddddff;
+    FONT-SIZE: 8pt;
+    FONT-WEIGHT:normal;
+}
+.caption
+{
+    COLOR: #CDE5AD;
+    FONT-STYLE: italic;
+    FONT-WEIGHT: bold
+}
+.question
+{
+    BACKGROUND-COLOR: darkred;
+    COLOR: whitesmoke
+}
+
+.bodytext
+{
+font-family:Verdana;
+font-weight:normal;
+font-size:10pt;
+color:#C3C3C3;
+}
+.midbodytext
+{
+font-size:8pt;
+}
+.smallbodytext
+{
+font-size:7pt;
+}
+.imgborder
+{
+	border-right: #cde5ad 1px solid;
+	border-top: #cde5ad 1px solid;
+	border-left: #cde5ad 1px solid;
+	border-bottom: #cde5ad 1px solid;
+}
+.button	{color:#000000; background:#d5d5d5;}
+TH {color:yellow}

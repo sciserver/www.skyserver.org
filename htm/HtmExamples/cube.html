@@ -1,0 +1,102 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=iso-8859-1">
+<title>Cube</title>
+<link href="../styles/skystyles.css" rel="stylesheet" type="text/css">
+<link href="../styles/tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- George 1.0 --><!-- #BeginLibraryItem "/htm/Library/examplenav.lbi" -->
+<!----------------------------------------   TABS -->
+<div class="tabs">
+  <ul>
+    <li><a href="../index.html"><span>HTM<br />&nbsp;</span></a></li>
+	<li><a href="sdssRegions.html"><span>SDSS Regions<br />&nbsp;</span></a></li>
+    <li><a href="tinydisk.html"><span>Disk<br />&nbsp;</span></a></li>
+	<li><a href="ColoradoPolygon.html"><span>Colorado<br />Polygon</span></a></li>
+	<li><a href="ColoradoRectangle.html"><span>Colorado<br />Rectangle</span></a></li>
+	<li><a href="cube.html"><span>Cube<br />&nbsp;</span></a></li>
+	<li><a href="masks.html"><span>Mask<br />&nbsp;</span></a></li>
+	<li><a href="utahrects.html"><span>Utah<br />&nbsp;</span></a></li>
+	<li><a href="california.html"><span>California<br />&nbsp;</span></a></li>
+	<li><a href="testRegions.html"><span>Tests<br />&nbsp;</span></a></li>
+	<li><a href="extremeRegions.html"><span>Extreme<br />&nbsp;</span></a></li>
+	<li><a href="georgiachull.html"><span>Chull<br />&nbsp;</span></a></li>
+</ul></div>
+<!----------------------------------------   END TABS -->
+<!-- #EndLibraryItem --><h1>Cube</h1>
+<p>
+<table width="100%"  border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="37%"><img src="../images/cubetrans.png" alt="" name="example" width="320" height="240" id="example" /></td>
+<td width="63%" align="left" valign="top">
+This convex is the intersection of
+six rather large halfspaces (holes)
+which yield six unconnected patches.
+</td>
+</tr>
+</table>
+<p>&nbsp;</p>
+<h2>SPECIFICATION</h2>
+<div class="fragment">
+<pre class="fragment">
+CONVEX CARTESIAN 
+    1  0  0 -0.6 
+    0  1  0 -0.6
+    0  0  1 -0.6
+   -1  0  0 -0.6
+    0 -1  0 -0.6
+    0  0 -1 -0.6
+</pre>
+</div>
+<h2>NORMAL FORM</h2>
+<div class="fragment">
+<pre class="fragment">
+REGION CONVEX CARTESIAN 
+    1  0  0 -0.6 
+    0  1  0 -0.6
+    0  0  1 -0.6
+   -1  0  0 -0.6
+    0 -1  0 -0.6
+    0  0 -1 -0.6
+</pre>
+</div>
+<h2>C# CODE</h2>
+<div class="fragment">
+<pre class="fragment">
+Region reg = new Region();
+Convex con = new Convex();
+con.Add( new Halfspace(1.0,  0.0,  0.0, false, -0.6));
+con.Add( new Halfspace(0.0,  1.0,  0.0, false, -0.6)); 
+con.Add( new Halfspace(0.0,  0.0,  1.0, false, -0.6));
+con.Add( new Halfspace(-1.0,  0.0,  0.0, false, -0.6));
+con.Add( new Halfspace(0.0, -1.0,  0.0, false, -0.6));
+con.Add( new Hslfspace(0.0,  0.0, -1.0, false, -0.6));
+List&lt;Int64Pair&gt; rangelist = Cover.Hidrange(reg);
+</pre>
+</div>
+<h2>COVERMAP</h2>
+<p>&nbsp;</p>
+<p><img src="../images/cubehtm.png" width="240" height="200" /> </p>
+<p>There are 8 corners with 4 partial trixels each. Each of these
+forms a single run of level 20 HtmID numbers, and therefore create a single range.
+This is a coincidence. In general, we can not presume to be this lucky.
+One such corner is seen above</p>
+<div class="fragment"><pre class="fragment">
+ 9878424780800,  9895604649983
+10977936408576, 10995116277759
+12077448036352, 12094627905535
+13176959664128, 13194139533311
+14276471291904, 14293651161087
+15375982919680, 15393162788863
+16475494547456, 16492674416639
+17575006175232, 17592186044415
+</pre>
+</div>
+<p>&nbsp;</p>
+<!-- #BeginLibraryItem "/Library/gyurifooter.lbi" -->
+<! ----------- FOOTER -->
+<hr size="1">
+<address style="align: right;">
+<small> Last update March 29, 2007  Gy&ouml;rgy Fekete <font color="red">version 3.1.2</font> </small>
+</address>
+<!-- #EndLibraryItem --></body>
+</html>

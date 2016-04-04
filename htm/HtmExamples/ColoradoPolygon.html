@@ -1,0 +1,84 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=iso-8859-1">
+<title>Colorado Polygon</title>
+<link href="../styles/skystyles.css" rel="stylesheet" type="text/css">
+<link href="../styles/tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- George 1.0 --><!-- #BeginLibraryItem "/htm/Library/examplenav.lbi" -->
+<!----------------------------------------   TABS -->
+<div class="tabs">
+  <ul>
+    <li><a href="../index.html"><span>HTM<br />&nbsp;</span></a></li>
+	<li><a href="sdssRegions.html"><span>SDSS Regions<br />&nbsp;</span></a></li>
+    <li><a href="tinydisk.html"><span>Disk<br />&nbsp;</span></a></li>
+	<li><a href="ColoradoPolygon.html"><span>Colorado<br />Polygon</span></a></li>
+	<li><a href="ColoradoRectangle.html"><span>Colorado<br />Rectangle</span></a></li>
+	<li><a href="cube.html"><span>Cube<br />&nbsp;</span></a></li>
+	<li><a href="masks.html"><span>Mask<br />&nbsp;</span></a></li>
+	<li><a href="utahrects.html"><span>Utah<br />&nbsp;</span></a></li>
+	<li><a href="california.html"><span>California<br />&nbsp;</span></a></li>
+	<li><a href="testRegions.html"><span>Tests<br />&nbsp;</span></a></li>
+	<li><a href="extremeRegions.html"><span>Extreme<br />&nbsp;</span></a></li>
+	<li><a href="georgiachull.html"><span>Chull<br />&nbsp;</span></a></li>
+</ul></div>
+<!----------------------------------------   END TABS -->
+<!-- #EndLibraryItem --><h1>Colorado Polygon </h1>
+<p>
+<table width="100%"  border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="37%"><img src="../images/coloradoConvex.png" alt="" name="example" width="320" height="240" id="example" /></td>
+<td width="63%" align="left" valign="top">
+This convex consists of a polygon defined by its four vertices
+and the four great circle segments that form its edges. Note,
+that all halfspaces in the convex specification are zero halfspaces.
+</td>
+</tr>
+</table>
+<p>&nbsp;</p>
+<h2>SPECIFICATION</h2>
+<div class="fragment">
+<pre class="fragment">
+POLY  J2000 -109.55 41 -102.05 41 -102.05 37 -109.55 37</p>
+</pre>
+</div>
+<h2>NORMAL FORM</h2>
+<div class="fragment">
+<pre class="fragment">
+REGION  CONVEX
+0.16408633555203456 0.5798688163263036 0.79801493114943456 0
+-0.97796579112795223 0.20876520635268361 1.9894623485011255E-16 0
+-0.17884992645074524 -0.63204224045914992 -0.75401280498671974 0
+0.94234983075993217 -0.3346293419094134 0 0
+</pre>
+</div>
+<h2>C# CODE</h2>
+<div class="fragment">
+<pre class="fragment">
+Region reg = Parser.compile(
+  "POLY  J2000 -109.55 41 -102.05 41 -102.05 37 -109.55 37");
+List<Int64Pair> rangelist = Cover.HidRange(reg);
+</pre>
+</div>
+<h2>COVERMAP</h2>
+<p>&nbsp;</p>
+<p><img src="../images/ColoradoPolyHtm.png" width="240" height="200" /> </p>
+
+<div class="fragment"><pre class="fragment">
+14367202476032, 14367470911487
+15264313769984, 15265387511807
+15265655947264, 15266461253631
+15266729689088, 15268608737279
+15311558410240, 15312632152063
+15312900587520, 15313705893887
+15314779635712, 15315853377535
+</pre>
+</div>
+<p>&nbsp;</p>
+<!-- #BeginLibraryItem "/Library/gyurifooter.lbi" -->
+<! ----------- FOOTER -->
+<hr size="1">
+<address style="align: right;">
+<small> Last update March 29, 2007  Gy&ouml;rgy Fekete <font color="red">version 3.1.2</font> </small>
+</address>
+<!-- #EndLibraryItem --></body>
+</html>

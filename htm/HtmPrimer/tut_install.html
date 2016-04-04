@@ -1,0 +1,57 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=iso-8859-1">
+<title>HTM Installation</title>
+<link href="../styles/skystyles.css" rel="stylesheet" type="text/css">
+<link href="../styles/tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- George 1.0 -->
+<!----------------------------------------   TABS -->
+<div class="tabs">
+  <ul>
+    <li><a href="../index.html"><span>HTM</span></a></li>
+    <li><a href="./tut_primer.html"><span>Spatial Constructs</span></a></li>
+    <li><a href="../HtmPrimer/tut_covermap.html"><span>Covermap</span></a></li>
+    <li><a href="../HtmPrimer/tut_queries.html"><span>Queries</span></a></li>
+   
+	<li><a href="../HtmPrimer/regiongrammar.html"><span>Grammar</span></a></li>
+	<li id="current"><a href="../HtmPrimer/tut_install.html"><span>Installation</span></a></li>
+	 <li><a href="../HtmAPI/html/index.html"><span>API</span></a></li>
+	  <li><a href="../../default.aspx"><span>Home</span></a></li>
+</ul></div>
+<!----------------------------------------   END TABS -->
+<h1>HTM Installation </h1>
+<h2>WINDOWS</h2>
+<p> Grab the
+<a href="../dist/SphericalHTM_3_1_2.zip">SphericalHTM_3_1_2.zip</a>,
+and unpack it somewhere. Follow the instructions in ./local/README.txt.
+<h3>YUKON EXTENSIONS</h3>
+MS SqlServer 2005 needs two things. The DLLs included in the distribution, and the execution
+of some SQL scripts that install the scalar- and table-valued functions.
+<p>
+The directory structure after installation
+<div class="fragment">
+<pre class="fragment">
+C:\apps\jhucas\bin\Release
+    Spherical.Quickhull.dll
+    SphericalHTM.dll
+    SphericalLib.dll
+</pre>
+</div>
+<p></p>
+<p>The data files are only needed, if you want to install the data to perform the exercises in the "Table Valued Functions" paper, and in the 
+<a href="tut_queries.html">HTM Primer/Queries</a><div class="fragment">
+<pre class="fragment">
+C:\apps\jhucas\data
+    PlaceC.dat
+    StationsC.dat
+</pre>
+</div>
+</p>
+</p><!-- #BeginLibraryItem "/htm/Library/lastchangefooter.lbi" -->
+<! ----------- FOOTER -->
+<hr size="1">
+<address style="align: right;">
+<small> Last update May 29, 2007  Gy&ouml;rgy Fekete <font color="red">version 3.1.2</font> </small>
+</address>
+<!-- #EndLibraryItem --></body>
+</html>

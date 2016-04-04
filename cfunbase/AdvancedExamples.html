@@ -1,0 +1,310 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=iso-8859-1">
+<title>CfunBASE Advanced Examples</title>
+<link href="styles/skystyles.css" rel="stylesheet" type="text/css">
+<link href="styles/tabs.css" rel="stylesheet" type="text/css">
+<style type="text/css">
+<!--
+.boldred {
+	color: #CC3300;
+	font-weight: bold;
+}
+-->
+</style>
+</head><body>
+
+<!----------------------------------------   TABS -->
+<div class="tabs">
+  <ul>
+    <li><a href="./index.html"><span>CfunBASE Overview</span></a></li>
+	<li><a href="./FunctionsExamples.html"><span>Examples of Functions</span></a></li>
+	<li><a href="./Installation.html"><span>Download/Installation</span></a></li>
+	<li id="current"><a href="./AdvancedExamples.html"><span>Advanced Examples</span></a></li>
+    <li><a href="./CfunBASE_API/html/index.html"><span>API</span></a></li>
+	<li><a href="../default.aspx"><span>Home</span></a></li>
+
+</ul></div>
+<!----------------------------------------   END TABS -->
+<h1>Advanced Examples</h1>
+<p>
+These examples can be run in <a style="color:Lime" href="http://casjobs.sdss.org/CasJobs/">CasJobs</a>, accesing SDSS data from BestDR7 database, where <it>CfunBASE</it> functions are supposed to be uploaded into. <br>
+<ul>
+<li><a style="color:Lime" href="#LumFunCMD">Galaxy Luminosity Function and Color-Magnitude Diagram</a></li>
+<li><a style="color:Lime" href="#FoF">Friends-of-Friends galaxy-cluster finding algorithm</a></li>
+</ul>
+<p />
+
+Refer to the <a style="color:Lime" href="./index.html"><it>CfunBASE</it></a> paper for more details.
+</p>
+
+<h2><a name="LumFunCMD"> Galaxy Luminosity Function and Color-Magnitude Diagram </a> </h2>
+
+<p>
+<center>
+<a href="images/LumFunCMD.jpg">
+<img src="images/LumFunCMD.jpg" width="480" height="640"></a>
+<br>Luminosity Function (top) and Color-Magnitude Diagram (bottom) constructed by running the below T-SQL script.<br>
+</center>
+</p>
+
+ <div class="fragment">
+  <pre class="fragment">
+--Calculating the spectroscopic survey area::
+SELECT SUM(area) FROM BestDR7..Region 
+WHERE type='SECTOR' -- AreaSurvey = 7932.12522550822 = 7932.125 SqDeg
+--Setting up the redshift, luminosity distance and apparent magnitude cuts: 
+DECLARE @z_1 float, @z_2 float, @Dlum_1 float, @Dlum_2 float, @m1im_1 float, @mlim_2 float, 
+        @FracVolume float, @AreASurvey float, @Vsurvey float
+SET @z_1 = 0.04;
+SET @z_2 = 0.12;
+SET @Dlum_1=dbo.fCosmfDl(@z_1); print @Dlum_1
+SET @Dlum_2=dbo.fCosmfDl(@z_2); print @Dlum_2
+SET @m1im_1 = 13.50
+SET @mlim_2 = 17.77
+-- The fraction of the entire sky volume occupied by the survey footprint:
+SET @FracVolume = 0.1922801 -- @FracVolume = AreaSurvey / ( 4*PI()*power((180/PI()),2)  )
+
+-- Creating small table with galaxy sample:
+CREATE TABLE DR7small(
+ SpecObjID bigint primary key not null, RA float not null, DEC float not null, z float not null,
+ m_r float not null, Vmax float not null, Color_u_r float not null
+)
+
+INSERT DR7small
+SELECT 
+ specobjid, ra, dec, z, petromag_r-extinction_r as m_r,
+ (dbo.fCosmfComovVolumeFromDl( 
+   CASE
+   WHEN @Dlum_2 < dbo.fcosmfDl(z)*POWER(10.0,(@mlim_2-(petromag_r-extinction_r))/5.0) 
+     THEN 
+       @Dlum_2
+     ELSE
+       dbo.fcosmfDl(z)*POWER(10.0,(@mlim_2-(petromag_r-extinction_r))/5.0) 
+   END)-
+ dbo.fCosmfComovVolumeFromDl(
+   CASE 
+   WHEN @Dlum_1 > dbo.fcosmfDl(z)*POWER(10.0,(@m1im_1-(petromag_r-extinction_r))/5.0) 
+     THEN
+       @Dlum_1 
+     ELSE
+       dbo.fcosmfDl(z)*POWER(10.0,(@m1im_1-(petromag_r-extinction_r))/5.0) 
+   END) )*@FracVolume AS Vmax,
+ (modelMag_u-extinction_u)-(modelMag_r-extinction_r) AS Color_u_r
+FROM BestDR7.dbo.specphoto
+WHERE
+z between @z_1 and @z_2
+and primtarget&(64|128|256)!=0 -- This chooses the MGS galaxies
+and petromag_r-extinction_r between @m1im_1 and @mlim_2
+--add your custom photometric and spectroscopic constraints here.
+
+-- Getting the Luminosity function and its error. 
+-- Absolute magnitude range is [-25,-15], with number of bins = 100
+-- (bin size DeltaM = 0.1 magnitudes)
+SELECT dbo.fMathBin(v.AbsMag_r,-25, -15, 100 ,1, 1) AS AbsMag, 
+sum(1/v.Vmax)/0.1 AS Phi, 
+sqrt(sum( 1/(v.Vmax*v.Vmax) ) )/0.1 AS PhiError,
+count(*) AS counts	  
+FROM (	SELECT dbo.fCosmfAbsMag(m_r,z) AS AbsMag_r, Vmax FROM DR7small) AS v
+GROUP BY dbo.fMathBin(v.AbsMag_r,-25, -15, 100 ,1, 1)
+ORDER BY dbo.fMathBin(v.AbsMag_r,-25, -15, 100 ,1, 1)
+
+-- This gets the same luminosity function as a probability distribution, i.e.,
+-- The area under it is unity.
+EXECUTE spMathHistogramNDim 'SELECT dbo.fCosmfAbsMag(m_r,z), 1.0/(Vmax) FROM DR7small'
+,1, '-25', '-15', '100' ,1
+
+-- This gets the color magnitude diagram as a probability distribution, i.e.,
+-- The area under it is unity. The color range is [0,5] with number of bins = 100.
+EXECUTE spMathHistogramNDim 'SELECT dbo.fCosmfAbsMag(m_r,z),Color_u_r, 1.0/Vmax FROM DR7small'
+,2, '-25,0', '-15,5', '100,100' ,1
+
+</pre>
+</div>
+
+
+<h2><a name="FoF">Friends-of-Friends galaxy-cluster finding algorithm</a> </h2>
+
+<p>
+ <center>
+<a href="images/LSSvolumeLimited.png">
+<img src="images/LSSvolumeLimited.png" width="640" height="400"></a>
+<br>Large Scale structure with enhanced galaxy groups of 10 or more members (derived from the Friends-of-Friends algorithm) in the DR7 northern galactic cap. The axes show comoving distance in Mpc.<br>
+</center>
+</p>
+
+
+
+
+<div class="fragment">
+<pre class="fragment">
+--This table stores spatial information: 
+CREATE TABLE DR7smallLSS(
+ SpecObjID bigint not null, RA float not null, DEC float not null, z float not null,
+  Gx float not null, Gy float not null, Gz float not null
+--If native MS-SQL server 2008 geospatial indexing is also wanted, add the following line:
+--,GeographyCol geography not null
+)
+-- This creates a unique clustered index or primary key with spatial information:
+ALTER TABLE DR7smallLSS ADD PRIMARY KEY (Gx,Gy,Gz,SpecObjID);
+
+INSERT DR7smallLSS
+SELECT 
+  specobjid, ra, dec , z,
+-- The following gets the midpoints of the 3-dimensional grid cells. Note that 
+-- the cell side length is rounded to 7Mpc, having 80 cell divisions per dimension.
+  dbo.fMathBin(dbo.fCosmfDc(z)*SIN(radians(90.0-dec))*COS(radians(RA)),0,560,80,1,1),
+  dbo.fMathBin(dbo.fCosmfDc(z)*SIN(radians(90.0-dec))*SIN(radians(RA)),0,560,80,1,1),  
+  dbo.fMathBin(dbo.fCosmfDc(z)*COS(radians(90.0-dec)),0,560,80,1,1)
+--If native SQL 2008 server geospatial indexing is also wanted, add the following line:
+--,GEOGRAPHY::Point(dec,ra,4326) -- 4326 is the SRID number of a custom Earth shape definition.
+FROM DR7small
+--Add the following line if a volume limited sample is wanted
+--WHERE (dbo.fCosmfComovingVolume(0.12)-dbo.fCosmfComovingVolume(0.04))*0.1922801 <= Vmax
+ORDER BY 
+dbo.fMathBin(dbo.fCosmfDc(z)*SIN(radians(90.0-dec))*COS(radians(RA)),0,560,80,1,1),
+dbo.fMathBin(dbo.fCosmfDc(z)*SIN(radians(90.0-dec))*SIN(radians(RA)),0,560,80,1,1),  
+dbo.fMathBin(dbo.fCosmfDc(z)*COS(radians(90.0-dec)),0,560,80,1,1), specObjID
+
+
+-- This creates the Neighbors table:
+CREATE TABLE NeighborsLSS(
+SpecObjID bigint not null, NeighborSpecObjID bigint not null
+)
+CREATE unique clustered index SpecObjIDNeighborSpecObjID ON 
+  NeighborsLSS(SpecObjID,NeighborSpecObjID)
+
+INSERT NeighborsLSS
+SELECT h1.Specobjid, h2.SpecObjID
+FROM DR7smallLSS as h1, DR7smallLSS as h2 
+WHERE 
+-- The value 7.1 Mpc intead of 7 Mpc is chosen to avoid eventual problems with rounding:
+h2.Gx between h1.Gx - 7.1 and h1.Gx + 7.1 and
+h2.Gy between h1.Gy - 7.1 and h1.Gy + 7.1 and
+h2.Gz between h1.Gz - 7.1 and h1.Gz + 7.1 and
+-- If native SQL 2008 server geospatial indexing is also wanted, 
+-- erase the previous 3 lines and add the following line:
+-- h1.GeographyRaDec.STDistance(h2.GeographyRaDec) <= (6360000.0)*0.00794 
+-- Note that 6360000 is a custom Earth radius in meters, and 0.00794 radians is the angular size 
+-- distance of 1.288 Mpc at redshift 0.04
+and
+-- The following defines the cylindrical volume around the galaxies:
+(dbo.fCosmfDc(h1.z) + dbo.fCosmfDc(h2.z)) * 
+ SIN(dbo.fMathAngSepRADEC(h1.ra,h1.dec,h2.ra,h2.dec)/2.0) <= 1.288 and -- Transverse
+ABS(dbo.fCosmfDc(h1.z)-dbo.fCosmfDc(h2.z)) <= 6.902 and -- Line of sight
+h1.Specobjid != h2.SpecObjID
+GROUP BY h1.Specobjid,h2.SpecObjID
+ORDER BY h1.Specobjid,h2.SpecObjID
+GO
+
+
+
+IF OBJECT_ID('Groups') IS NOT NULL DROP TABLE Groups
+IF EXISTS (SELECT name FROM tempdb..sysobjects WHERE name like '#temp%') 
+  DROP TABLE #temp
+IF EXISTS (SELECT name FROM tempdb..sysobjects WHERE name like '#Remaining%') 
+  DROP TABLE #Remaining
+IF EXISTS (SELECT name FROM tempdb..sysobjects WHERE name like '#PreviousNeighbors%') 
+  DROP TABLE #PreviousNeighbors
+IF EXISTS (SELECT name FROM tempdb..sysobjects WHERE name like '#Neighbors%') 
+  DROP TABLE #Neighbors
+IF EXISTS (SELECT name FROM tempdb..sysobjects WHERE name like '#NewNeighbors%')  
+  DROP TABLE #NewNeighbors
+
+CREATE TABLE Groups(
+SpecObjID bigint not null, GroupID int not null
+)
+
+-- This finds and labels into groups the galaxies that have no neighbors: 
+SELECT SpecObjID,IDENTITY(int,1,1) AS GroupID INTO #temp FROM DR7smallLSS
+WHERE SpecObjID NOT IN (SELECT SpecObjID FROM NeighborsLSS)
+ORDER BY SpecObjID
+INSERT Groups SELECT * FROM #temp
+DROP TABLE #temp
+GO
+
+-- #Remaining has the galaxies that have not been yet labeled:
+CREATE TABLE #Remaining(SpecObjID bigint primary key not null)
+INSERT #Remaining SELECT specobjid FROM DR7smallLSS 
+  WHERE SpecObjID NOT IN (SELECT SpecObjID FROM Groups) ORDER BY SpecObjID
+
+-- #Neighbors stores the neighboring galaxies of the ones in table #PreviousNeighbors, and 
+-- #NewNeighbors stores the neighboring galaxies of the ones in table #Neighbors that 
+-- are not in table #PreviousNeighbors 
+CREATE TABLE #PreviousNeighbors(SpecObjID bigint not null)
+CREATE TABLE #Neighbors(SpecObjID bigint not null)
+CREATE TABLE #NewNeighbors(SpecObjID bigint not null)
+
+--SET NOCOUNT ON
+
+-- Starting the FoF algorithm:
+
+DECLARE @SpecObjID bigint
+DECLARE @i int, @counts int
+
+-- @i stores the group label:
+SELECT @i=COUNT(*)+1 FROM Groups
+
+-- Getting the first galaxy:
+SELECT TOP 1 @SpecObjID= specobjid FROM #Remaining
+INSERT #PreviousNeighbors SELECT @SpecObjID
+-- Finding the neighbors:
+INSERT #Neighbors SELECT NeighborSpecObjID FROM NeighborsLSS WHERE SpecObjID = @SpecObjID
+-- labeling the group:
+INSERT Groups SELECT @SpecObjID,@i
+--Updating #Remaining:
+DELETE FROM #Remaining WHERE SpecObjID=@SpecObjID
+
+--Starting the loop that finds new neighbors: 
+WHILE 1=1
+BEGIN
+  TRUNCATE TABLE #NewNeighbors
+-- Getting the new neighbors of the neighbors:
+  INSERT #NewNeighbors
+  SELECT n1.NeighborSpecObjID
+  FROM NeighborsLSS as n1 JOIN #Neighbors n2 on n1.SpecObjID=n2.SpecObjID
+  WHERE n1.NeighborSpecObjID NOT IN 
+    (SELECT SpecObjID FROM #PreviousNeighbors UNION SELECT SpecObjID FROM #Neighbors)
+  GROUP BY n1.NeighborSpecObjID
+
+  SELECT @counts = COUNT(*) FROM #NewNeighbors
+  IF (@counts>=1)-- If there are new neighbors, label current the group members and set the new neighbors 
+                 -- as the current neighbors:
+    BEGIN
+      INSERT Groups
+      SELECT SpecObjID, @i FROM #Neighbors
+      DELETE FROM #Remaining WHERE SpecObjID in (SELECT SpecObjID FROM #Neighbors)
+      TRUNCATE TABLE #PreviousNeighbors
+      INSERT #PreviousNeighbors SELECT SpecObjID FROM #Neighbors
+      TRUNCATE TABLE #Neighbors
+      INSERT #Neighbors SELECT SpecObjID FROM #NewNeighbors
+    END
+  ELSE -- If there are no new neighbors, store the group label and start with new galaxy: 
+    BEGIN
+      INSERT Groups
+      SELECT SpecObjID, @i FROM #Neighbors
+      DELETE FROM #Remaining WHERE SpecObjID in (SELECT SpecObjID FROM #Neighbors)
+      SET @i=@i+1
+      SELECT TOP 1 @SpecObjID = specobjid FROM #Remaining
+-- If all galaxies have been labeled, stop:
+      IF NOT EXISTS (select top 1 specobjid from #Remaining)
+        BREAK -- this exists the while loop
+      TRUNCATE TABLE #PreviousNeighbors
+      INSERT #PreviousNeighbors SELECT @SpecObjID
+      TRUNCATE TABLE #Neighbors
+      INSERT #Neighbors SELECT NeighborSpecObjID FROM NeighborsLSS WHERE SpecObjID = @SpecObjID
+      INSERT Groups SELECT @SpecObjID,@i
+      DELETE FROM #Remaining WHERE SpecObjID=@SpecObjID
+    END
+END
+
+
+</pre>
+</div>
+
+
+    <li> 
+<address style="align: right;">
+<small> Last update June 21, 2010  Manuchehr Taghizadeh-Popp <font color="red">version 5.5.5</font> </small>
+</address>
+<!-- #EndLibraryItem --></body>
+</html>

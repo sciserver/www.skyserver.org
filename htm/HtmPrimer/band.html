@@ -1,0 +1,76 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=iso-8859-1">
+<title>Band Example</title>
+<link href="../styles/skystyles.css" rel="stylesheet" type="text/css">
+<link href="../styles/tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- George 1.0 -->
+<!----------------------------------------   TABS -->
+<div class="tabs">
+  <ul>
+    <li>
+<a href="circle.html"><span>circle</span></a></li>
+	<li id="current"><a href="band.html"><span>band</span></a></li>
+    <li><a href="rectangle.html"><span>rectangle</span></a></li>
+    <li><a href="polygon.html"><span>polygon</span></a></li>
+    <li><a href="../index.html"><span>Primer home</span></a></li>
+</ul></div>
+<!----------------------------------------   END TABS -->
+<h2>Band</h2>
+<p> To get the band pictured here, take the intersection of two overlapping halfspaces. They are each bigger than a hemisphere, so 
+<code>D < 0</code>..
+<p />
+
+
+
+<table align="center">
+ <tr>
+  <td align="center">
+    <img src="../images/band.png" alt="Picture of a band" width="320" height="240"> </td>
+ </tr>
+  <tr>
+   <td align="center"> <strong>Figure 3. 4 halfspaces that define a rectangle</strong>
+   </td>
+  </tr>
+</table>
+
+<h2>SPECIFICATION</h2>
+<div class="fragment">
+  <pre class="fragment">
+REGION CONVEX
+    0.0 0.0  1.0 -0.08 
+    0.0 0.0 -1.0 -0.15
+</pre>
+</div>
+<h2>NORMAL FORM</h2>
+<div class="fragment">
+  <pre class="fragment">
+REGION CONVEX
+    0.0 0.0  1.0 -0.08 
+    0.0 0.0 -1.0 -0.15
+</pre>
+</div>
+<h2>C# Code snippet</h2>
+<div class="fragment"><pre class="fragment">
+/* .... */
+namespace MySpace {
+    public class MyApp {
+        public void MyFunc(){
+            Region r = new Region();
+            Convex c = new Convex();
+            c.Add(new Halfspace(0.0, 0.0,  1.0, -0.08)); 
+            c.Add(new Halfspace(0.0, 0.0, -1.0, -0.15)); 
+            r.Add(c);
+	    /* ... */
+        }
+    }
+}
+</pre></div>
+<!-- #BeginLibraryItem "/htm/Library/lastchangefooter.lbi" -->
+<! ----------- FOOTER -->
+<hr size="1">
+<address style="align: right;">
+<small> Last update May 29, 2007  Gy&ouml;rgy Fekete <font color="red">version 3.1.2</font> </small>
+</address>
+<!-- #EndLibraryItem --></body>
+</html>

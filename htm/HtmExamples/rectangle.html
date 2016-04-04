@@ -1,0 +1,72 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=iso-8859-1">
+<title>Rectangle Example</title>
+<link href="../styles/skystyles.css" rel="stylesheet" type="text/css">
+<link href="../styles/tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- George 1.0 -->
+<!----------------------------------------   TABS -->
+<div class="tabs">
+  <ul>
+    <li>
+<a href="../htmetc/circle.html"><span>circle</span></a></li>
+<li><a href="../htmetc/band.html"><span>band</span></a></li>
+    <li id="current"><a href="../htmetc/rectangle.html"><span>rectangle</span></a></li>
+    <li><a href="../htmetc/polygon.html"><span>polygon</span></a></li>
+    <li><a href="../htmetc/index.html"><span>Tutorial home</span></a></li>
+</ul></div>
+<!----------------------------------------   END TABS -->
+<h2>Rectangle</h2>
+<p>
+This is a simple box consisting of ra/dec (or lat/lon) limits.
+lines of equal declination (latitude) are (generally) small circles parallel
+to the equator. The equal lines of right ascension (longitude) are meridiens,
+which are great circles. The four halfspaces defined by these circles
+are oriented so that they "trap" the rectangular region of interest. This
+is nothing more than the intersection of four halfspaces, therefore it can
+be represented as a single convex.
+<p />
+The white band is created by the intersection of the two halfspaces each of which
+is bigger than a hemisphere. Those are the ones with
+<code>D < 0</code> (red and blue). The other two hemispheres' intersection
+creates the lune. The intersection  of the band and the lune yield the white rectangle.
+
+<table align="center">
+ <tr>
+  <td align="center">
+    <img src="../images/rect.png" alt="Picture of a rectangle">
+  </td>
+ </tr>
+  <tr>
+   <td align="center"> <strong>Figure 3. 4 halfspaces that define a rectangle</strong>
+   </td>
+  </tr>
+</table>
+
+
+<div class="fragment"><pre class="fragment">
+using Spherical;
+/* .... */
+namespace MySpace {
+    public class MyApp {
+        public void MyFunc(){
+            Region r = new Region();
+            Convex c = new Convex();
+            c.Add(new Halfspace(0.0, 0.0,  1.0, -0.08)); 
+            c.Add(new Halfspace(0.0, 0.0, -1.0, -0.15)); 
+            c.Add(new Halfspace(0.2, 0.9,  0.0,  0.0)); 
+            c.Add(new Halfspace(0.6, 0.7,  0.0,  0.0)); 
+            r.Add(c);
+	    /* ... */
+        }
+    }
+}
+</pre></div>
+<!-- #BeginLibraryItem "/Library/gyurifooter.lbi" -->
+<! ----------- FOOTER -->
+<hr size="1">
+<address style="align: right;">
+<small> Last update March 29, 2007  Gy&ouml;rgy Fekete <font color="red">version 3.1.2</font> </small>
+</address>
+<!-- #EndLibraryItem --></body>
+</html>

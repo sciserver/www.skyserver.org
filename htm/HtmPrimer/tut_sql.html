@@ -1,0 +1,92 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=iso-8859-1">
+<title>Spherial Tutorial</title>
+<link href="../styles/skystyles.css" rel="stylesheet" type="text/css">
+<link href="../styles/tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- George 1.0 -->
+<!----------------------------------------   TABS -->
+<div class="tabs">
+  <ul>
+    <li>
+<a href="../index.html"><span>Tutorial&nbsp;home</span></a></li>
+    <li id="current"><a href="tut_htm.html"><span>HTM</span></a></li>
+	    <li><a href="tut_covermap.html"><span>Covermap</span></a></li>
+    <li><a href="tut_queries.html"><span>Queries</span></a></li>
+</ul></div>
+<!----------------------------------------   END TABS -->
+<h1>SQL Server Extensions</h1>
+<h2><a class="anchor" name="sql"> 
+t-SQL</a></h2>
+The common language runtime (CLR) integration of SQL Server 2005 makes
+it easy to create a table-valued function. This simple example will
+create a function that returns a table of two lat/lon locations. With
+Visual STudio 2005, create a Visual C# Database SQL Server
+project. Add a new item to this project, pick "User-Defined
+Function" from the available templates.  Add two using clauses for
+System.Collections and System.Collections.Generic. Add two functions
+and an internal class to the UserDefinedFunctions created by Visual
+Studio: 
+<p>
+</p>
+<pre class="fragment">
+using System;
+using System.Data;
+using System.Data.SqlClient;
+using System.Data.SqlTypes;
+using Microsoft.SqlServer.Server;
+using System.Collections;
+using System.Collections.Generic;
+
+public partial class UserDefinedFunctions {
+    [Microsoft.SqlServer.Server.SqlFunction]
+    public static SqlString Function1() {
+        // Put your code here
+        return new SqlString("Hello");
+    }
+    [SqlFunction(TableDefinition = "latitude float, longitude float",
+        FillRowMethodName = "FillLocation")]
+
+    public static IEnumerable csPlaces() {
+        List<Location> points = new List<Location>(2);
+        points.Add(new Location(38.1, -76.2)); // Baltimore
+        points.Add(new Location(90.0, 0.0)); // North Pole
+        return (IEnumerable)points;
+    }
+    class Location : Object {
+        public SqlDouble lat, lon;
+        public Location(SqlDouble lat, SqlDouble lon) {
+            this.lat = lat;
+            this.lon = lon;
+        }
+    }
+    private static void FillLocation(object source, out SqlDouble lat, out SqlDouble lon) {
+        Location p = (Location)source;			// down-cast IEnumerable objects
+        lat = p.lat;				// do the extraction/serialziation
+        lon = p.lon;
+    }
+
+};
+</pre></div>
+<p>
+When you Build->Deploy Solution, the table-valued function
+"csPlaces()" is installed in the database. You can now execute
+a query that returns a table of two locations:
+
+<div class="fragment">
+<pre class="fragment">
+select * from dbo.csPlaces()
+
+latitude               longitude
+---------------------- ----------------------
+38.1                   -76.2
+90                     0
+</pre></div>
+</p><!-- #BeginLibraryItem "/htm/Library/lastchangefooter.lbi" -->
+<! ----------- FOOTER -->
+<hr size="1">
+<address style="align: right;">
+<small> Last update May 29, 2007  Gy&ouml;rgy Fekete <font color="red">version 3.1.2</font> </small>
+</address>
+<!-- #EndLibraryItem --></body>
+</html>

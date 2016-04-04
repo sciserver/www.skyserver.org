@@ -1,0 +1,196 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=iso-8859-1">
+<title>Region Specification Language</title>
+<link href="../styles/skystyles.css" rel="stylesheet" type="text/css">
+<link href="../styles/tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- George 1.0 -->
+<!----------------------------------------   TABS -->
+<div class="tabs">
+  <ul>
+    <li><a href="../index.html"><span>HTM</span></a></li>
+    <li><a href="./tut_primer.html"><span>Spatial Constructs</span></a></li>
+    <li><a href="../HtmPrimer/tut_covermap.html"><span>Covermap</span></a></li>
+    <li><a href="../HtmPrimer/tut_queries.html"><span>Queries</span></a></li>
+   
+	<li id="current"><a href="../HtmPrimer/regiongrammar.html"><span>Grammar</span></a></li>
+	<li><a href="../HtmPrimer/tut_install.html"><span>Installation</span></a></li>
+	 <li><a href="../HtmAPI/html/index.html"><span>API</span></a></li>
+	  <li><a href="../../default.aspx"><span>Home</span></a></li>
+</ul></div>
+<!----------------------------------------   END TABS -->
+<!----------------------------------------   END TABS -->
+<h1>REGION Specification Language </h1>
+<p>The production rules below form the complete specification for the grammar that
+generates region descriptions.
+The <a href="../HtmAPI/html/class_spherical_1_1_h_t_m_1_1_parser.html">Parser.compile() </a>method
+creates instances of Regions from strings of this language.
+</p>
+<p>The so called <em>(disjunctive) normal form</em> is a specification that contains references
+to regions and convexes only.
+Any region object created by the API, when formatted into text will always produce a normal form string representation.
+For example, a rectangle 
+<div class="fragment">
+<pre class="fragment">RECT LATLON 37 -109.55  41 -102.05</pre></div>
+<p>becomes the intersection of four halfspaces in a convex</p>
+<div class="fragment">
+<pre class="fragment">
+REGION CONVEX
+  0 0 1 0.60181502315204827
+  0 0 -1 -0.65605902899050728
+  0.94234983075993228 -0.33462934190941329 0 0
+  -0.97796579112795223 0.20876520635268361 0 0
+  </pre></div>
+  </p>
+<table width="844px"  border="0" cellspacing="0" cellpadding="0"></td>
+ <tr>   <td width="80%" align="left" valign="top">
+	  <p><font face="Verdana, Arial, Helvetica, sans-serif"><strong>Notation</strong></font></p>
+	  <p><font face="Courier New, Courier, mono">{...}*&nbsp;</font> &nbsp;0 or more instances of the syntax
+	  element between the braces<br />
+	    <font face="Courier New, Courier, mono">{...}2&nbsp;</font> &nbsp;exactly 2 instances of the syntax element between the braces<br />
+	    <font face="Courier New, Courier, mono">{...}3+</font> &nbsp;3 or more instances of the syntax element between the braces<br />
+	    <font face="Courier New, Courier, mono"><em>null</em>&nbsp; &nbsp; </font>the empty string<br />
+		<br />
+		<font face="Courier New, Courier, mono">R &nbsp; &nbsp; &nbsp; </font>  &nbsp;is degrees in arcminutes.<br />
+		<font face="Courier New, Courier, mono">D &nbsp; &nbsp; &nbsp; </font>  &nbsp;is a real number between -1 and 1<br />
+		<br />
+      </p>
+      </td></tr><tr>
+	  <td><table width="100%">
+ 	<! ------------REGION----------------> 
+	  <tr>
+	  <td width="10%">regionSpec</td>
+	  <td width="5%">&rarr;</td>
+	  <td width="85%"><font face="Courier New, Courier, mono">REGION {areaSpec}* | areaSpec </font></td>
+	  </tr>
+ <tr>
+	  <td width="10%">areaSpec</td>
+	  <td width="5%">&rarr;</td>
+	  <td width="85%"><font face="Courier New, Courier, mono">circleSpec | rectSpec | polySpec | hullSpec | convexSpec </font></td>
+	  </tr> <tr>
+	  <td width="10%">convexSpec</td>
+	  <td width="5%">&rarr;</td>
+	  <td width="85%"><font face="Courier New, Courier, mono">CONVEX J2000 {ra dec D}*</font></td>
+	  </tr>
+	  <tr>
+	  <td width="10%">&nbsp;</td>
+	  <td width="5%">&nbsp;</td>
+	  <td width="85%"><font face="Courier New, Courier, mono">| CONVEX LATLON {lat lon D}*</font></td>
+	  </tr>
+
+	  <tr>
+	  <td width="10%">&nbsp;</td>
+	  <td width="5%"></td>
+	  <td width="85%"><font face="Courier New, Courier, mono">| CONVEX CARTESIAN {x y z D}*</font></td>
+	  </tr>
+	 <tr>
+	  <td width="10%">&nbsp;</td>
+	  <td width="5%"></td>
+	  <td width="85%"><font face="Courier New, Courier, mono">| CONVEX {x y z D}*</font></td>
+	  </tr>
+	 
+	  <td width="10%">&nbsp;</td>
+	  <td width="5%">&nbsp;</td>
+	  <td width="85%"><font face="Courier New, Courier, mono">| <em>null</em></font></td>
+	  </tr>
+
+	 <! -END->
+	 <! ------------RECTANGLE----------------> 
+	  <tr>
+	  <td width="10%">rectSpec</td>
+	  <td width="5%">&rarr;</td>
+	  <td width="85%"><font face="Courier New, Courier, mono">RECT J2000 {ra dec}2</font></td>
+	  </tr>
+
+	  <tr>
+	  <td width="10%">&nbsp;</td>
+	  <td width="5%">&nbsp;</td>
+	  <td width="85%"><font face="Courier New, Courier, mono">| RECT LATLON {lat lon}2</font></td>
+	  </tr>
+
+	  <tr>
+	  <td width="10%">&nbsp;</td>
+	  <td width="5%"></td>
+	  <td width="85%"><font face="Courier New, Courier, mono">| RECT CARTESIAN {x y z }2</font></td>
+	  </tr>
+
+	 <! -->
+<! ------------CIRCLE----------------> 
+	  <tr>
+	  <td width="10%">circleSpec</td>
+	  <td width="5%">&rarr;</td>
+	  <td width="85%"><font face="Courier New, Courier, mono">CIRCLE J2000 ra dec R</font></td>
+	  </tr>
+
+	  <tr>
+	  <td width="10%">&nbsp;</td>
+	  <td width="5%">&nbsp;</td>
+	  <td width="85%"><font face="Courier New, Courier, mono">| CIRCLE LATLON lat lon R</font></td>
+	  </tr>
+
+	  <tr>
+	  <td width="10%">&nbsp;</td>
+	  <td width="5%"></td>
+	  <td width="85%"><font face="Courier New, Courier, mono">| CIRCLE CARTESIAN x y z R</font></td>
+	  </tr>
+<! -- end ><! ------------Polygon--------------> 
+	  <tr>
+	  <td width="10%">polySpec</td>
+	  <td width="5%">&rarr;</td>
+	  <td width="85%"><font face="Courier New, Courier, mono">POLY J2000 {ra dec}3+</font></td>
+	  </tr>
+
+	  <tr>
+	  <td width="10%">&nbsp;</td>
+	  <td width="5%">&nbsp;</td>
+	  <td width="85%"><font face="Courier New, Courier, mono">| POLY LATLON {lat lon}3+</font></td>
+	  </tr>
+
+	  <tr>
+	  <td width="10%">&nbsp;</td>
+	  <td width="5%"></td>
+	  <td width="85%"><font face="Courier New, Courier, mono">| POLY CARTESIAN {x y z}3+</font></td>
+	  </tr>
+	 <! -END->
+ 	<! ------------Convex Hull---------------> 
+	  <tr>
+	  <td width="10%">hullSpec</td>
+	  <td width="5%">&rarr;</td>
+	  <td width="85%"><font face="Courier New, Courier, mono">CHULL J2000 {ra dec}3+</font></td>
+	  </tr>
+
+	  <tr>
+	  <td width="10%">&nbsp;</td>
+	  <td width="5%">&nbsp;</td>
+	  <td width="85%"><font face="Courier New, Courier, mono">| CHULL LATLON {lat lon}3+</font></td>
+	  </tr>
+
+	  <tr>
+	  <td width="10%">&nbsp;</td>
+	  <td width="5%"></td>
+	  <td width="85%"><font face="Courier New, Courier, mono">| CHULL CARTESIAN {x y z}3+</font></td>
+	  </tr>
+	  <tr>
+	    <td>&nbsp;</td>
+	    <td></td>
+	    <td>&nbsp;</td>
+	    </tr>
+	  <tr>
+	    <td>&nbsp;</td>
+	    <td></td>
+	    <td>&nbsp;</td>
+	    </tr>
+	  <tr>
+	    <td>&nbsp;</td>
+	    <td></td>
+	    <td>&nbsp;</td>
+	    </tr>
+
+	 <! -END->
+
+	  
+	  </table></td>
+  </tr>
+</table>
+</body>
+</html>

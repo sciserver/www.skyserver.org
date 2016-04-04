@@ -1,0 +1,719 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=iso-8859-1">
+<title>CfunBASE functions</title>
+<link href="styles/skystyles.css" rel="stylesheet" type="text/css">
+<link href="styles/tabs.css" rel="stylesheet" type="text/css">
+<style type="text/css">
+<!--
+.boldred {
+	color: #CC3300;
+	font-weight: bold;
+}
+-->
+</style>
+</head><body>
+
+<!----------------------------------------   TABS -->
+<div class="tabs">
+  <ul>
+    <li><a href="./index.html"><span>CfunBASE Overview</span></a></li>
+	<li id="current"><a href="./FunctionsExamples.html"><span>Examples of Functions</span></a></li>
+	<li><a href="./Installation.html"><span>Download/Installation</span></a></li>
+	<li><a href="./AdvancedExamples.html"><span>Advanced Examples</span></a></li>
+    <li><a href="./CfunBASE_API/html/index.html"><span>API</span></a></li>
+	<li><a href="../default.aspx"><span>Home</span></a></li>
+
+</ul></div>
+<!----------------------------------------   END TABS -->
+<h1>Examples of CLR Functions </h1>
+
+<p>
+The complete list of functions in <it>CfunBASE</it>'s Application Programming Interface (API) can be found <a style="color:Lime" href="./CfunBASE_API/html/index.html">here</a>.
+Details on the implementation can be found in the <a style="color:Lime" href="./index.html"><it>CfunBASE</it></a> paper.
+<br />
+The cosmological functions and basic statistical and exploratory data analysis functions can be uploaded into an MS-SQL Server database by means of CLR integration, and executed as simple T-SQL commmands.<br>
+</p>
+
+<p>
+The database uploading scripts are divided into 2 kinds, depending whether they contain functions with free or fixed cosmological parameters.<br>
+The names of the functions with fixed cosmological parameters start with "fCosmf", and are detemined by the following parameter vaues (at redshift=0) for a flat universe:
+</p>
+
+<ul>
+<li>OmegaLambda = 0.726
+<li>OmegaCurvature = 0.0
+<li>OmegaRadiation = 1e-4
+<li>OmegaMatter = 1- OmegaLambda - OmegaCurvature - OmegaRadiation = 0.2739
+<li>HubbleConstant = 70.5 km/s/Mpc
+<li>w_0 = -1 (dark energy state equation)<br>
+Reference: Komatsu et al. (2009) ApJS 180:330-376
+</ul>
+
+<p>
+On the other hand, the names of the free cosmological parameters functions strat with "fCosmo", and the T-SQL functions declaration is identical to the fixed case, with the exception of the addition of the 
+following parameters with default values equal to the ones in the fixed case:
+<ul>
+...,@OmegaM float=0.2739, @OmegaL float=0.726, @OmegaR float=1e-4, @w_0 float=-1, @h_0 float=0.705)
+</ul>
+
+<p>
+Follow these links for the T-SQL declaration, descriptions and simple examples of the cosmological and mathematical functions:
+</p>
+<ul>
+<li><a style="color:Lime" href="#CosmoFunctions">Cosmological Functions (fixed cosmological parameters)</a></li>
+<li><a style="color:Lime" href="#MathFunctions">Mathematical Functions/Data Exploratory tools</a></li>
+</ul>
+<p />
+
+<center>
+<a href="images/CosmoQuantities.jpg">
+<img src="images/CosmoQuantities.jpg" width="650" height="490"></a>
+<br>Normalized cosmological functions in the redshift interval [0,2.75], obtained from executing the functions 
+<font style="color:Aqua;font-family:Courier"> fCosmfQuantities,fCosmfHubbleDistance</font> and <font style="color:Aqua;font-family:Courier">fCosmfHubbleTime</font>. 
+. 
+Refer to the <a style="color:Lime" href="./index.html"><it>CfunBASE</it></a> paper for more details.<br>
+</center>
+</p>
+
+<h2><a name="CosmoFunctions"> Cosmological Functions (fixed cosmological parameters)</a></h2>
+
+<div class="fragment"><pre class="fragment">
+<p style="color:Aqua;font-size:16px;font-family:Courier">fCosmfDl( @z ) </p>
+
+Returns the luminosity distance [Mpc] at a given redshift.<br>
+
+Parameters:<br>
+<li> @z float: redshift
+returns Dl float: luminosity distance in Mpc.
+<br><samp style="color:Aqua"> select dbo.fCosmfDl(0.1) </samp>
+<br> returns 457.924826431644
+<br> see also fCosmfZfromDl
+</pre></div>
+
+
+<div class="fragment"><pre class="fragment">
+<p style="color:Aqua;font-size:16px;font-family:Courier">fCosmfDcInterval( @Zmin float, @Zmax ) </p>
+
+Returns the line of sight comoving distance [Mpc] comprehended in the redshift interval [@Zmin,@Zmax].<br>
+
+Parameters:<br>
+<li> @Zmin float: lower bound of the redshift interval
+<li> @Zmax float: upper bound of the redshift interval
+returns DcInterval float: line of sight comoving distance in Mpc.
+<br><samp style="color:Aqua"> select dbo.fCosmfDcInterval(0,0.1) </samp>
+<br> returns 416.29529675604
+<br> see also fCosmfZfromDc,fCosmfDc
+</pre></div>
+
+
+
+<div class="fragment"><pre class="fragment">
+<p style="color:Aqua;font-size:16px;font-family:Courier">fCosmfDc( @z ) </p>
+
+Returns the line of sight comoving distance [Mpc] at a given redshift.<br>
+
+Parameters:<br>
+<li> @z float: redshift
+returns Dc float: line of sight comoving distance in Mpc.
+<br><samp style="color:Aqua"> select dbo.fCosmfDc(0.1) </samp>
+<br> returns 416.29529675604
+<br> see also fCosmfZfromDc,fCosmfDcInterval
+</pre></div>
+
+
+<div class="fragment"><pre class="fragment">
+<p style="color:Aqua;font-size:16px;font-family:Courier">fCosmfDa( @z ) </p>
+
+Returns the angular diameter distance [Mpc] at a given redshift.<br>
+
+Parameters:<br>
+<li> @z float: redshift
+returns Da float: angular diameter distance in Mpc.
+<br><samp style="color:Aqua"> select dbo.fCosmfDa(0.1);select dbo.fCosmfDa(29.7570891825681) </samp>
+<br> return 378.450269778218 and 378.450269778217
+<br> see also fCosmfZfromDa
+</pre></div>
+
+
+<div class="fragment"><pre class="fragment">
+<p style="color:Aqua;font-size:16px;font-family:Courier">fCosmfDm( @z ) </p>
+
+Returns the transverse comoving distance [Mpc] at a given redshift.<br>
+
+Parameters:<br>
+<li> @z float: redshift
+returns Dm float: transverse comoving distance in Mpc.
+<br><samp style="color:Aqua"> select dbo.fCosmfDm(0.1) </samp>
+<br> returns 416.29529675604
+<br> see also fCosmfZfromDm
+</pre></div>
+
+
+<div class="fragment"><pre class="fragment">
+<p style="color:Aqua;font-size:16px;font-family:Courier">fCosmfComovDist2Objects( @Redshift1 float, @Redshift2 float, @AngularSeparation ) </p>
+
+Returns the comoving distance [Mpc] between 2 objects at different redshifts and locations in the sphere.<br>
+
+Parameters:<br>
+<li> @Redshift1 float: redshift of object 1.
+<li> @Redshift2 float: redshift of object 2.
+<li> @AngularSeparation float: angular separation (in radians) between the 2 objects.
+returns ComovDist float: comoving distance between the two objects in Mpc.
+<br><samp style="color:Aqua"> select dbo.fCosmfComovDist2Objects(0.1,0.1,dbo.fMathAngSepXYZ(1,0,0,-1,0,0)) </samp>
+<br> returns 832.590593512079
+<br> see also fCosmfZfromDc, fMathAngSepXYZ, fMathAngSepRADEC
+</pre></div>
+
+
+
+<div class="fragment"><pre class="fragment">
+<p style="color:Aqua;font-size:16px;font-family:Courier">fMathAngSepXYZ(@x1 float, @y1 float, @z1 float, @x2 float, @y2 float, @z2 ) </p>
+
+Returns the angular separation (in radians) between 2 points in Cartesian coordinates.<br>
+
+Parameters:<br>
+<li> @x1 float: x-coordinate of point 1.
+<li> @y1 float: y-coordinate of point 1.
+<li> @z1 float: z-coordinate of point 1.
+<li> @x2 float: x-coordinate of point 2.
+<li> @y2 float: y-coordinate of point 2.
+<li> @z2 float: z-coordinate of point 2.
+returns AngularSeparation float: angular separation (in radians) between the two points.
+<br><samp style="color:Aqua"> select dbo.fMathAngSepXYZ(1,0,0,-1,0,0) </samp>
+<br> returns 3.14159265358979
+<br> see also fMathAngSepRADEC
+</pre></div>
+
+
+
+<div class="fragment"><pre class="fragment">
+<p style="color:Aqua;font-size:16px;font-family:Courier">fMathAngSepRADEC(@Ra1 float, @Dec1 float, @Ra2 float, @Dec2 ) </p>
+
+Returns the angular separation (in radians) between 2 points in Equatorial coordinates.<br>
+
+Parameters:<br>
+<li> @Ra1 float: right ascension of point 1 in degrees.
+<li> @Dec1 float: declination of point 1 in degrees.
+<li> @Ra2 float: right ascension of point 2 in degrees.
+<li> @Dec2 float: declination of point 2 in degrees.
+returns AngularSeparation float: angular separation (in radians) between the two points.
+<br><samp style="color:Aqua"> select dbo.fMathAngSepRADEC(0,0,0,180) </samp>
+<br> returns 3.14159265358979
+<br> see also fMathAngSepXYZ
+</pre></div>
+
+
+
+<div class="fragment"><pre class="fragment">
+<p style="color:Aqua;font-size:16px;font-family:Courier">fCosmfComovingVolume( @z ) </p>
+
+Returns the comoving volume [Mpc^3] between here and a given redshift.<br>
+
+Parameters:<br>
+<li> @z float: redshift
+returns ComoVingVolume float: Comoving Volume in Mpc^3.
+<br><samp style="color:Aqua"> select dbo.fCosmfComovingVolume(0.1) </samp>
+<br> returns 302199069.142958
+<br> see also fCosmfComovVolumeFromDl
+</pre></div>
+
+
+<div class="fragment"><pre class="fragment">
+<p style="color:Aqua;font-size:16px;font-family:Courier">fCosmfLookBackTime( @z ) </p>
+
+Returns the time interval [Gyr] between the present time and a particular redshift.<br>
+
+Parameters:<br>
+<li> @z float: redshift 
+returns LookBackTime float: look back time in Gyr.
+<br><samp style="color:Aqua"> select dbo.fCosmfLookBackTime(0.1) </samp>
+<br> returns 1.29457139146011
+<br> see also fCosmfAgeOfUniverse and fCosmfTimeInterval
+</pre></div>
+
+
+
+<div class="fragment"><pre class="fragment">
+<p style="color:Aqua;font-size:16px;font-family:Courier">fCosmfAgeOfUniverse( @z ) </p>
+
+Returns the time interval [Gyr] between a particular redshift and the beginning of the universe.<br>
+
+Reference:
+Komatsu et al. (2009) ApJS 180:330-376 <br>
+Parameters:<br>
+<li> @z float: redshift 
+returns AgeOfUniverse float: age of the universe in Gyr.
+<br><samp style="color:Aqua"> select dbo.fCosmfAgeOfUniverse(0.1) </samp>
+<br> returns 12.4125088821662
+<br> see also fCosmfLookBackTime and fCosmfTimeInterval
+</pre></div>
+
+
+
+<div class="fragment"><pre class="fragment">
+<p style="color:Aqua;font-size:16px;font-family:Courier">fCosmfTimeInterval( @zMin float, @zMax ) </p>
+
+Returns the time interval [Gyr] between redshifts zMin and zMax.<br>
+
+Parameters:<br>
+<li> @zMin float: redshift
+<li> @zMax float: redshift
+returns TimeInterval float: time interval in Gyr.
+<br><samp style="color:Aqua"> select dbo.fCosmfTimeInterval(0.1,5) </samp>
+<br> returns 11.2165195832486
+<br> see also fCosmfLookBackTime and fCosmfAgeOfUniverse
+</pre></div>
+
+
+
+<div class="fragment"><pre class="fragment">
+<p style="color:Aqua;font-size:16px;font-family:Courier">fCosmfHubbleDistance(@z ) </p>
+
+Returns the Hubble Distance [Mpc] at a particular redshift.<br>
+
+Parameters:<br>
+<li> @z float: redshift
+returns HubbleDistance float: hubble distance in Mpc.
+<br><samp style="color:Aqua"> select dbo.fCosmfHubbleDistance(0) </samp>
+<br> returns 4252.37529078014
+</pre></div>
+
+
+
+<div class="fragment"><pre class="fragment">
+<p style="color:Aqua;font-size:16px;font-family:Courier">fCosmfHubbleTime(@z ) </p>
+
+Returns the Hubble Time [Gyr] at a particular redshift.<br>
+
+Parameters:<br>
+<li> @z float: redshift
+returns HubbleTime float: hubble time in Gyr.
+<br><samp style="color:Aqua"> select dbo.fCosmfHubbleTime(0) </samp>
+<br> returns 13.8697014395366
+</pre></div>
+
+
+<div class="fragment"><pre class="fragment">
+<p style="color:Aqua;font-size:16px;font-family:Courier;font-family:Courier">fCosmfZfromTh( @HubbleTime ) </p>
+Returns the redshift at a given hubble time [Gyr].<br>
+Parameters:<br>
+<li> @HubbleTime float: Hubble time in Gyr.
+returns redshift float
+<br><samp style="color:Aqua"> select dbo.fCosmfZfromTh(dbo.fCosmfHubbleTime(0.1)) </samp>
+<br> returns 0.0999999999999993
+<br> see also fCosmfHubbleTime
+</pre></div>
+
+<div class="fragment"><pre class="fragment">
+<p style="color:Aqua;font-size:16px;font-family:Courier">fCosmfZfromDh( @HubbleDistance ) </p>
+
+Returns the redshift at a given hubble distance [Mpc].<br>
+
+Parameters:<br>
+<li> @HubbleDistance float: Hubble distance in Mpc.
+returns redshift float
+<br><samp style="color:Aqua"> select dbo.fCosmfZfromDh(dbo.fCosmfHubbleDistance(0.1)) </samp>
+<br> returns 0.0999999999999994
+<br> see also fCosmfHubbleDistance
+</pre></div>
+
+
+
+<div class="fragment"><pre class="fragment">
+<p style="color:Aqua;font-size:16px;font-family:Courier">fCosmfZfromComovVolume( @ComovVolume ) </p>
+
+Returns the redshift at a given comoving volume [Mpc^3].<br>
+
+Parameters:<br>
+<li> @ComovVolume float: Comoving volume in Mpc^3.
+returns redshift float
+<br><samp style="color:Aqua"> select dbo.fCosmfZfromComovVolume(dbo.fCosmfComovingVolume(0.1)) </samp>
+<br> returns 0.1
+<br> see also fCosmfComovingVolume, fCosmfDl and fCosmfComovVolumeFromDl
+</pre></div>
+
+
+
+
+<div class="fragment"><pre class="fragment">
+<p style="color:Aqua;font-size:16px;font-family:Courier">fCosmfComovVolumeFromDl( @LumDistance ) </p>
+
+Returns the comoving volume at a given luminosity distance [Mpc].<br>
+
+Parameters:<br>
+<li> @LumDistance float: Luminosity distance in Mpc.
+returns ComovVolume float
+<br><samp style="color:Aqua"> select dbo.fCosmfZfromComovVolume(dbo.fCosmfComovVolumeFromDl(dbo.fCosmfDl(0.1))) </samp>
+<br> returns 0.1
+<br> see also fCosmfComovingVolume, fCosmfDl and fCosmfZfromComovVolume
+</pre></div>
+
+
+
+
+<div class="fragment"><pre class="fragment">
+<p style="color:Aqua;font-size:16px;font-family:Courier">fCosmfZfromDl( @LuminosityDistance ) </p>
+
+Returns the redshift at a given luminosity distance [Mpc].<br>
+
+Parameters:<br>
+<li> @LuminosityDistance float: luminosity distance in Mpc.
+returns redshift float
+<br><samp style="color:Aqua"> select dbo.fCosmfZfromDl(dbo.fCosmfDl(0.1)) </samp>
+<br> returns 0.1
+<br> see also fCosmfDl
+</pre></div>
+
+
+
+<div class="fragment"><pre class="fragment">
+<p style="color:Aqua;font-size:16px;font-family:Courier">fCosmfZfromDa( @AngularDiamDist ) </p> 
+
+Returns a row with the first and second solution for the redshifts at a given angular diameter distance [Mpc].<br>
+
+Parameters:<br>
+<li> @AngularDiamDist float: angular diameter distance in Mpc.
+returns table (z1 float, z2 ) </p>: one row table where z1 and z2 are the first and second solutions, and z1<=z2.
+<br><samp style="color:Aqua"> select * from dbo.fCosmfZfromDa(dbo.fCosmfDa(0.1)) </samp>
+<br> returns the row 0.1	29.7570891825681
+<br> see also fCosmfDa
+</pre></div>
+
+
+
+<div class="fragment"><pre class="fragment">
+<p style="color:Aqua;font-size:16px;font-family:Courier">fCosmfZfromDm( @ComovDistTransverse ) </p>
+
+Returns the redshift for a given transverse comoving distance [Mpc].<br>
+
+Parameters:<br>
+<li> @ComovDistTransverse float: transverse comoving distance in Mpc.
+returns redshift float
+<br><samp style="color:Aqua"> select dbo.fCosmfZfromDm(dbo.fCosmfDm(0.1)) </samp>
+<br> returns 0.1
+<br> see also fCosmfDm
+</pre></div>
+
+
+
+<div class="fragment"><pre class="fragment">
+<p style="color:Aqua;font-size:16px;font-family:Courier">fCosmfZfromDc( @ComovDistLineOfSight ) </p>
+
+Returns the redshift at a given line of sight comoving distance [Mpc].<br>
+Parameters:<br>
+<li> @ComovDistLineOfSight float: line of sight comoving distance in Mpc.
+returns redshift float
+<br><samp style="color:Aqua"> select dbo.fCosmfZfromDc(dbo.fCosmfDc(0.1)) </samp>
+<br> returns 0.1
+<br> see also fCosmfDc
+</pre></div>
+
+
+<div class="fragment"><pre class="fragment">
+<p style="color:Aqua;font-size:16px;font-family:Courier">fCosmfZfromAgeOfUniverse( @AgeOfUniverse ) </p>
+
+Returns the redshift at a given age of the universe [Gyr].<br>
+
+Parameters:<br>
+<li> @AgeOfUniverse float: Age of the universe in Gyr.
+returns redshift float
+<br><samp style="color:Aqua"> select dbo.fCosmfZfromAgeOfUniverse(dbo.fCosmfAgeOfUniverse(0.1)) </samp>
+<br> returns 0.1
+<br> see also fCosmfZfromLookBackTime,fCosmfAgeOfUniverse
+</pre></div>
+
+
+<div class="fragment"><pre class="fragment">
+<p style="color:Aqua;font-size:16px;font-family:Courier">fCosmfZfromLookBackTime( @LookBackTime ) </p>
+
+Returns the redshift at a given look back time [Gyr].<br>
+
+Parameters:<br>
+<li> @LookBackTime float: look back time in Gyr.
+returns redshift float
+<br><samp style="color:Aqua"> select dbo.fCosmfZfromLookBackTime(dbo.fCosmfLookBackTime(0.1)) </samp>
+<br> returns 0.1
+<br> see also fCosmfZfromAgeOfUniverse,fCosmfLookBackTime
+</pre></div>
+
+
+
+
+
+<div class="fragment"><pre class="fragment">
+<p style="color:Aqua;font-size:16px;font-family:Courier">fCosmfAbsMag( @m float, @z ) </p>
+
+Returns the absolute magnitude of a galaxy at a particular redshift.<br>
+
+Parameters:<br>
+<li> @m float: apparent magnitude of the object
+<li> @z float: redshift
+returns AbsMag: absolute magnitude
+<br><samp style="color:Aqua"> select dbo.fCosmfAbsMag(17.5,0.1) </samp>
+<br> returns -20.8039709473829
+<br> see also fCosmfDistanceModulus
+</pre></div>
+
+
+
+<div class="fragment"><pre class="fragment">
+<p style="color:Aqua;font-size:16px;font-family:Courier">fCosmfDistanceModulus( @z ) </p>
+
+Returns the distance modulus at a particular redshift.<br>
+
+Parameters:<br>
+<li> @z float: redshift
+returns DistanceModulus: distance modulus 
+<br><samp style="color:Aqua"> select dbo.fCosmfDistanceModulus(0.1) </samp>
+<br> returns 38.3039709473829
+<br> see also fCosmfAbsMag
+</pre></div>
+
+
+<div class="fragment"><pre class="fragment">
+<p style="color:Aqua;font-size:16px;font-family:Courier">fCosmfQuantities(@zMin float, @zMax float, @NumBin int)</p>
+
+Returns a table with the midpoints values of a grid of redshifts, together with their corresponding values 
+of the cosmological distances, comoving volume and time intervals.<br>
+
+Parameters:<br>
+<li> @zMin float: redshift lower bound
+<li> @zMax float: redshift upper bound
+<li> @NumBin int: number of bins, at whose boundaries all the values are evaluated. Number of rows returned = @NumBin + 1.
+returns table (z float, Dc float, Dm float, Da float, Dl float, ComVol float, LookBackTime float, AgeOfUniverse ) </p> where
+<li> z: redshift 
+<li> Dc: line of sight comoving distance in Mpc.
+<li> Dm: transverse comoving distance in Mpc. 
+<li> Da: angular diameter distance in Mpc.
+<li> Dl: luminosity distance in Mpc.
+<li> ComVol: comoving volume in MPc^3.
+<li> LookBackTime: look back time at z in Gyr.
+<li> AgeOfUniverse: age of the universe at z in Gyr.
+<br><samp style="color:Aqua"> select * from dbo.fCosmfQuantities(0,5,1000) </samp>
+</pre></div>
+
+
+<h2><a name="MathFunctions">Mathematical Functions/Data Exploratory tools</a></h2>
+
+<div class="fragment"><pre class="fragment">
+<p style="color:Aqua;font-size:16px;font-family:Courier;font-family:Courier">fMathGrid(@x1 float, @x2 float , @NumBin int, @IsLinearScale bit, @IsMidPoints bit)</p>
+
+Returns a column containing the tick marks (either interval boundaries or midpoints) that define 
+a grid of @NumBin bins in the interval [@x1,@x2]. The scale is either linear or logarithmic.<br>
+
+Parameters:<br>
+<li> @x1 float: lower bound of the interval.
+<li> @x2 float: upper bound of the interval.
+<li> @NumBin int: number of bins in which the interval is partitioned.
+<li> @IsLinearScale bit: True if the tick marks (or midpoints) are equally separated in linear scale, 
+    false if they are equally separated in logarithmic (base 10) scale .
+<li> @IsMidPoints bit: False if the tick marks that define the boundaries of the bins are returned. 
+    True if the midpoints of the bins are returned.
+returns table (TickMark float): the tick marks that define the boundaries of the bins. There are @NumBin+1 tick marks
+<br><samp style="color:Aqua"> select TickMark from dbo.fMathGrid(0,10,10,1,0) ; select TickMark,LOG10(TickMark) from dbo.fMathGrid(1,1e10,10,0,0) </samp>
+<br> see also spMathHistogramNDim,fMathBin
+</pre></div>
+
+
+
+
+
+
+
+<div class="fragment"><pre class="fragment">
+<p style="color:Aqua;font-size:16px;font-family:Courier;font-family:Courier">fMathBin(@x float, @x1 float, @x2 float , @NumBin int, @HasOpenUpperBound bit, @IsLinearScale bit)</p>
+
+Returns the bin's center where @x falls in, given a grid of @NumBin bins in the interval [@x1,@x2]. 
+The scale is either linear or logarithmic. Each bin can have open (or closed) upper (or lower) bounds.<br>
+
+Parameters:<br>
+<li> @x float: value.
+<li> @x1 float: lower bound of the interval.
+<li> @x2 float: upper bound of the interval.
+<li> @NumBin int: number of bins in which the inteval is partitioned.
+<li> @HasOpenUpperBound bit: true if the bins have open upper bounds (and closed lower bounds); 
+    false if the bins have open lower bounds (and closed upper bounds).
+returns BinCenter float: the center of the bin, where @x falls in. 
+<br><samp style="color:Aqua"> select TickMark,dbo.fMathBin(TickMark,0,10,10,0,1) as MidPoint from dbo.fMathGrid(0,10,10,1,0) </samp>
+<br> see also spMathHistogramNDim,fMathGrid
+</pre></div>
+
+
+
+
+
+
+<div class="fragment"><pre class="fragment">
+<p style="color:Aqua;font-size:16px;font-family:Courier;font-family:Courier">fMathRound(@x float, @SigDigits int)</p>
+
+Rounds a value up to the first @SigDigits significant digits.<br>
+
+Parameters:<br>
+<li> @x float: value.
+<li> @SigDigits int: number of significant digits. 
+returns value float: the initial @value rounded to @SigDigits significant digits. 
+<br><samp style="color:Aqua"> select round(100.8888888,4),dbo.fMathRound(100.8888888,4) </samp>
+<br> returns 100.8889000	100.9
+<br> see also round() from T-SQL
+</pre></div>
+
+
+
+
+
+	
+<div class="fragment"><pre class="fragment">
+<p style="color:Aqua;font-size:16px;font-family:Courier;font-family:Courier">aMathCDF(@AggregatedValues float, @Value float)</p>
+
+Aggregate function that returns the cumulative distribution function (CDF) at a @value, 
+given a column of values @AggregatedValues. If the value is not in the column of values, 
+linear interpolation is performed. <br>
+
+Parameters:<br>
+<li> @AggregatedValues float: column of values on which the aggregation takes place.
+<li> @Value float: value at which the CDF is evaluated.
+returns CDF float: the value of the CDF evaluated at @Value.
+<br><samp style="color:Aqua"> select dbo.aMathCDF(a.tickmark,5) as CDF from dbo.fMathGrid(1,10,9,1,0) as a </samp>
+<br> returns 0.5
+<br> see also aMathQuantile,fMathCDF,fMathQuantile 
+</pre></div>
+
+
+
+
+
+<div class="fragment"><pre class="fragment">
+<p style="color:Aqua;font-size:16px;font-family:Courier;font-family:Courier">aMathQuantile(@AggregatedValues float, @CDFvalue float)</p>
+
+Aggregate function that returns the inverse of the cumulative distribution function (CDF), 
+also called Quantile Function; evaluated at a value of the CDF @CDFvalue in the interval [0,1]. 
+The aggregate works on a column of values @AggregatedValues, on which linear interpolation is performed. <br>
+
+Parameters:<br>
+<li> @AggregatedValues float: column of values on which the aggragation takes place.
+<li> @CDFvalue float: value of the CDF in the interval [0,1].
+returns QuantileValue float: quantile function value (linearly interpolated between the column values)
+<br><samp style="color:Aqua"> select dbo.aMathQuantile(a.tickmark,0.5) as Median from dbo.fMathGrid(1,10,9,1,0) as a </samp>
+<br> returns 5
+<br> see also aMathCDF,fMathQuantile,fMathCDF
+</pre></div>
+
+
+
+
+
+
+<div class="fragment"><pre class="fragment">
+<p style="color:Aqua;font-size:16px;font-family:Courier;font-family:Courier">fMathCDF(@Query nvarchar(256), @Value float)</p>
+
+Returns the cumulative distribution function (CDF) at a value @Value, given a column of values 
+returned by a user defined query @Query. If the value is not in the column of values, linear interpolation is performed. <br>
+
+Parameters:<br>
+<li> @Query nvarchar(256): a select statement that returns one column of values. The column must be named 'col'. 
+    Maximum number of rows returned = 1e7
+<li> @Variable float: variable's value, at which one wants to calculate the corresponding Quantile.
+returns CDF float: the value of the CDF evaluated at @Value.
+<br><samp style="color:Aqua"> select dbo.fMathCDF('select TickMark as col from dbo.fMathGrid(1,10,9,1,0)', 5) as CDF </samp>
+<br> returns 0.5
+<br> see also aMathCDF,aMathQuantile,fMathQuantile
+</pre></div>
+
+
+
+
+
+
+<div class="fragment"><pre class="fragment">
+<p style="color:Aqua;font-size:16px;font-family:Courier;font-family:Courier">fMathQuantile(@Query nvarchar(256), @CDFvalue float)</p>
+
+Returns the inverse of the cumulative distribution function (CDF), also called Quantile Function; 
+evaluated at a value @CDFvalue of the CDF in the interval [0,1]. The functions works on a column of values 
+returned by a user defined query @Query. Linear interpolation between the column values is performed.<br>
+
+Parameters:<br>
+<li> @Query nvarchar(256): a select statement that returns one column of values. The column must be named 'col'. 
+    Maximum number of rows returned = 1e7
+<li> @CDFvalue float: value of the CDF in the interval [0,1].
+returns QuantileValue float: quantile function value (linearly interpolated between the column values)
+<br><samp style="color:Aqua"> select dbo.fMathQuantile('select TickMark as col from dbo.fMathGrid(1,10,9,1,0)',0.5) as Median </samp>
+<br> returns 5
+<br> see also aMathCDF,aMathQuantile,fMathCDF
+</pre></div>
+
+
+
+
+<div class="fragment"><pre class="fragment">
+<p style="color:Aqua;font-size:16px;font-family:Courier;font-family:Courier">spMathHistogramNDim(@Query nvarchar(512), @Dimension int, 
+    @String_X1 nvarchar(256), @String_X2 nvarchar(256), @String_NumCell nvarchar(256), @HasOpenUpperBound bit)</p>
+
+Returns an N-dimensional histogram (with optional weighting) of N-dimensional data points returned by a user defined select statement.<br>
+
+Parameters:<br>
+<li> @Query nvarchar(512): select statement that returns N-dimensional data points, each in one row. 
+    The number of columns should be equal to @Ndim. Optional multiplicative weights associated to the data points can also be added, 
+    by means of an extra (@Ndim+1)'th column in the select statement. 
+    The number of rows (i.e, N-Dimensional points) returned by @Query is forced to be less or equal than 1e7.
+<li> @NDim int: data points' number of dimensions. @NDim <= 10.
+<li> @String_X1 nvarchar(256): string composed by the lower bounds of the intervals in each dimension. 
+    There should be @NDim comma-separated values, placed in the same order as how their corresponding dimension appears in @Query.
+<li> @String_X2 nvarchar(256): string composed by the upper bounds of the intervals in each dimension. 
+    There should be @NDim comma-separated values, placed in the same order as how their corresponding dimension appears in @Query.
+<li> @String_NumCell nvarchar(256): string that contains the coma-separated values of the number of cells in which the intervals are divided, 
+    placed in the same order as how their corresponding dimensions appear in @Query.
+<li> @HasOpenUpperBound bit: true (or 1) if the bins have open upper bounds (and closed lower bounds); 
+    false (or 0) if the bins have open lower bounds (and closed upper bounds).
+returns table (BinCenter_1 float, BinCenter_2 float,..., BinCenter_N float, Height float, Counts floats) where </br>
+<li> BinCenter_1,...,BinCenter_N: The bins' centers, each one corresponding to one of the @NDim dimensions.   
+<li> Height: value of the normalized N-dimensional Histogram at the bin's center. 
+    The following applies: Sum_{over bins}[height(bin)*NDimensionalVolume(bin)] = 1
+<li> Counts: number of rows from @Query, whose values fall in the particular bin labeled by BinCenter_1,...,BinCenter_N.
+<br><samp style="color:Aqua"> declare @query nvarchar(max);
+    set @query='select top 10000 z, petromag_r-extinction_r from specphoto where primtarget&(64|128|256)!=0 and z between 0.05 and 0.15 
+                and petromag_r-extinction_r between 15 and 16';
+    exec spMathHistogramNDim @query,2,'0.05,15','0.15,16','20,20',1  </samp>
+<br> see also fMathBin,fMathGrid
+</pre></div>
+
+
+
+
+<div class="fragment"><pre class="fragment">
+<p style="color:Aqua;font-size:16px;font-family:Courier;font-family:Courier">fMathSafeSqlCommand(@cmd VARCHAR(8000), @limit INT = 1000)</p>
+Parses and checks the command @cmd against Sql-injection. Returns a string with a safe version of the command, 
+enforced to return a maximum of @limit rows. 
+Based on spExecuteSQL from http://casjobs.sdss.org/dr7/en/help/browser/browser.asp. <br>
+Parameters:<br>
+<li> @cmd VARCHAR(8000): T-SQL command to be screened.
+<li> @limit INT: maximum number of rows returned by @cmd.
+returns SafeCommand VARCHAR(8000): select statement safe to be executed or error message.
+This functions is based on the procedure spExecuteSQL.
+It parses a command given as input by the user (must be a select command)
+and returns a command that is safe to be executed.
+<br><samp style="color:Aqua"> select dbo.fMathSafeSqlCommand('select z from SpecPhoto',10000) </samp> 
+returns 'select  top 10000 z from SpecPhoto'.
+</pre></div>
+
+
+<div class="fragment"><pre class="fragment">
+<p style="color:Aqua;font-size:16px;font-family:Courier;font-family:Courier">fMathReplace (@oldstr VARCHAR(8000), @pattern VARCHAR(1000), @replacement VARCHAR(1000))</p>
+Case-insensitive string replacement
+Used by the SQL parser stored procedures. 
+Identical to fReplace from http://casjobs.sdss.org/dr7/en/help/browser/browser.asp.
+</pre></div>
+
+
+<div class="fragment"><pre class="fragment">
+<p style="color:Aqua;font-size:16px;font-family:Courier;font-family:Courier">fMathIsNumbers(@string varchar(8000), @start int, @stop int)</p>
+Check that the substring is a valid number. 
+Identical to fIsNumbers from http://casjobs.sdss.org/dr7/en/help/browser/browser.asp.
+</pre></div>
+
+
+    
+<address style="align: right;">
+<small> Last update June 21, 2010  Manuchehr Taghizadeh-Popp <font color="red">version 5.5.5</font> </small>
+</address>
+<!-- #EndLibraryItem --></body>
+</html>

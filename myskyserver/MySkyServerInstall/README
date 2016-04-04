@@ -1,0 +1,31 @@
+MySkyServer Setup
+
+This is a series of NSIS scripts used to generate an installer
+for MySkyServer.  
+
+The root script is skyserver.nsi.  These scripts are made and 
+run using HM NIS.  
+
+Because of size converns, the two main datafiles are left out of 
+this module.  They are nearly the same as the orginal MySkyServer data files, 
+except for the top few root directories are removed.  They should be named 
+the following and should follow this structure...
+
+
+MySkyServerDB.zip
+/MySkyServerDB/
+/MySkyServerDB/MyBestDR5_Data.MDF
+/MySkyServerDB/HTM_V2_R56/
+...etc
+
+MySkyServerWI.zip
+/MySkyServerWI/
+/MySkyServerWI/Services
+/MySkyServerWI/images
+/MySkyServerWI/en
+..etc
+
+
+that should do it...
+
+N

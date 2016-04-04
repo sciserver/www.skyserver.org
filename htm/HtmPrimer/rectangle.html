@@ -1,0 +1,96 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=iso-8859-1">
+<title>Rectangle Example</title>
+<link href="../styles/skystyles.css" rel="stylesheet" type="text/css">
+<link href="../styles/tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- George 1.0 -->
+<!----------------------------------------   TABS -->
+<div class="tabs">
+  <ul>
+    <li>
+<a href="circle.html"><span>circle</span></a></li>
+<li><a href="band.html"><span>band</span></a></li>
+    <li id="current"><a href="rectangle.html"><span>rectangle</span></a></li>
+    <li><a href="polygon.html"><span>polygon</span></a></li>
+    <li><a href="../index.html"><span>Primer home</span></a></li>
+</ul></div>
+<!----------------------------------------   END TABS -->
+<h2>Rectangle</h2>
+<p>
+This is a simple box consisting of ra/dec (or lat/lon) limits.
+lines of equal declination (latitude) are (generally) small circles parallel
+to the equator. The equal lines of right ascension (longitude) are meridiens,
+which are great circles. The four halfspaces defined by these circles
+are oriented so that they "trap" the rectangular region of interest. This
+is nothing more than the intersection of four halfspaces, therefore it can
+be represented as a single convex.
+<p />
+The white band is created by the intersection of the two halfspaces each of which
+is bigger than a hemisphere. Those are the ones with
+<code>D < 0</code> (red and blue). The other two hemispheres' intersection
+creates the lune. The intersection  of the band and the lune yield the white rectangle.
+
+<table align="center">
+ <tr>
+  <td align="center">
+    <img src="../images/rect.png" alt="Picture of a rectangle">
+  </td>
+ </tr>
+  <tr>
+   <td align="center"> <strong>Figure 3. 4 halfspaces that define a rectangle</strong>
+   </td>
+  </tr>
+</table>
+
+<h2>SPECIFICATION</h2>
+<div class="fragment">
+  <pre class="fragment">
+REGION CONVEX
+    0.0  0.0  1.0 -0.08 
+    0.0  0.0 -1.0 -0.15
+   -0.1 -0.9  0.0  0.0
+    0.7  0.6  0.0  0.0
+</pre>
+</div>
+<h2>NORMAL FORM</h2>
+<div class="fragment">
+  <pre class="fragment">
+REGION
+  CONVEX
+  0 0 1 -0.08
+  0 0 -1 -0.15
+  -0.11043152607484655 -0.9938837346736189 0 0
+  0.75925660236529657 0.6507913734559686 0 0</pre>
+</div>
+<p>The normal form is a bit different from the specification
+because all vectors are normalized </p>
+<h2>C# Code snippet</h2>
+<div class="fragment">
+  <pre class="fragment">
+using Spherical;
+/* .... */
+namespace MySpace {
+    public class MyApp {
+        public void MyFunc(){
+            Region r = new Region();
+            Convex c = new Convex();
+            c.Add(new Halfspace( 0.0,  0.0,  1.0, -0.08)); 
+            c.Add(new Halfspace( 0.0,  0.0, -1.0, -0.15)); 
+            c.Add(new Halfspace(-0.1, -0.9,  0.0,  0.0)); 
+            c.Add(new Halfspace( 0.7,  0.6,  0.0,  0.0)); 
+            r.Add(c);
+	    /* ... */
+        }
+    }
+}
+</pre>
+</div>
+<!-- #BeginLibraryItem "/htm/Library/lastchangefooter.lbi" -->
+<! ----------- FOOTER -->
+<hr size="1">
+<address style="align: right;">
+<small> Last update May 29, 2007  Gy&ouml;rgy Fekete <font color="red">version 3.1.2</font> </small>
+</address>
+<!-- #EndLibraryItem --></body>
+</html>

@@ -1,0 +1,185 @@
+<html><head><TITLE>SpatialDomain</TITLE></head>
+ <body text="#111111" bgcolor="#FFFFFF" link="#333399" vlink="#663366" alink="#CC0000">
+
+<!--
+Authors:        Peter Z. Kunszt
+Created:        August 2000
+
+ Copyright (C) 2000  Peter Z. Kunszt, Alex S. Szalay, Aniruddha R. Thakar
+                     The Johns Hopkins University
+
+ This program is free software; you can redistribute it and/or
+ modify it under the terms of the GNU General Public License
+ as published by the Free Software Foundation; either version 2
+ of the License, or (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with this program; if not, write to the Free Software
+ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+
+-->
+<h3>&nbsp;&nbsp;
+<font color="#7700EE">HTM SpatialIndex Class Reference</font>
+</h3>
+<img SRC="rule.gif" width="400" height="5" >
+
+
+<H2><A HREF ="#DOC.DOCU" > <IMG BORDER=0 SRC=down.gif width="36" height="36"></A>  class  SpatialDomain  </H2><BLOCKQUOTE>
+A spatial domain is a list of spatial convexes
+</BLOCKQUOTE>
+<hr>
+
+<DL>
+<TABLE BORDER>
+<DT><h3>Public Fields</h3><DD><TR><TD VALIGN=top><A HREF="#DOC.6.13"> <IMG BORDER=0 SRC=icon1.gif width="14" height="14"></A> const  <!1><A HREF="SpatialIndex.html">SpatialIndex</A>* </TD><TD><B>index</B> <br>
+<I></I>
+</TD></TR><TR><TD VALIGN=top><A HREF="#DOC.6.16"> <IMG BORDER=0 SRC=icon1.gif width="14" height="14"></A> static  uint64 </TD><TD><B>topBit_</B> <br>
+<I> The vector of convexes</I>
+</TD></TR></TABLE><TABLE BORDER>
+<DT><h3>Public Methods</h3><DD><TR><TD VALIGN=top><A HREF="#DOC.6.2"> <IMG BORDER=0 SRC=icon1.gif width="14" height="14"></A> </TD><TD><B>SpatialDomain</B> (const <!1><A HREF="SpatialIndex.html">SpatialIndex</A> * idx = 0)<br>
+<I> Constructor</I>
+</TD></TR><TR><TD VALIGN=top><A HREF="#DOC.6.3"> <IMG BORDER=0 SRC=icon1.gif width="14" height="14"></A> </TD><TD><B>~SpatialDomain</B> ()<br>
+<I> Destructor</I>
+</TD></TR><TR><TD VALIGN=top><A HREF="#DOC.6.4"> <IMG BORDER=0 SRC=icon1.gif width="14" height="14"></A> void </TD><TD><B>setIndex</B> (const <!1><A HREF="SpatialIndex.html">SpatialIndex</A> *)<br>
+<I> Set index pointer</I>
+</TD></TR><TR><TD VALIGN=top><A HREF="#DOC.6.5"> <IMG BORDER=0 SRC=icon1.gif width="14" height="14"></A> void </TD><TD><B>add</B> (<!1><A HREF="SpatialConvex.html">SpatialConvex</A> &)<br>
+<I> Add a convex</I>
+</TD></TR><TR><TD VALIGN=top><A HREF="#DOC.6.6"> <IMG BORDER=0 SRC=icon1.gif width="14" height="14"></A> void </TD><TD><B>simplify</B> ()<br>
+<I> Simplify the Domain, remove redundancies</I>
+</TD></TR><TR><TD VALIGN=top><A HREF="#DOC.6.1"> <IMG BORDER=0 SRC=icon1.gif width="14" height="14"></A> bool </TD><TD><B>intersect</B> (const <!1><A HREF="SpatialIndex.html">SpatialIndex</A> * idx, <!1><A HREF="BitList.html">BitList</A> & partial, <!1><A HREF="BitList.html">BitList</A> & full)<br>
+<I>Intersect with index</I>
+</TD></TR><TR><TD VALIGN=top><A HREF="#DOC.6.7"> <IMG BORDER=0 SRC=icon1.gif width="14" height="14"></A> bool </TD><TD><B>intersect</B> (const <!1><A HREF="SpatialIndex.html">SpatialIndex</A> * idx, <!1><A HREF="ValVec.html">ValVec</A><uint64> & partial, <!1><A HREF="ValVec.html">ValVec</A><uint64> & full)<br>
+<I> Same intersection, but return vectors of ids instead of bitlists.</I>
+</TD></TR><TR><TD VALIGN=top><A HREF="#DOC.6.8"> <IMG BORDER=0 SRC=icon1.gif width="14" height="14"></A> bool </TD><TD><B>intersect</B> (const <!1><A HREF="SpatialIndex.html">SpatialIndex</A> * idx, <!1><A HREF="ValVec.html">ValVec</A><uint64> & idlist)<br>
+<I> Same intersection, but return just a list of IDs not level depth</I>
+</TD></TR><TR><TD VALIGN=top><A HREF="#DOC.6.9"> <IMG BORDER=0 SRC=icon1.gif width="14" height="14"></A> size_t </TD><TD><B>numConvexes</B> ()<br>
+<I> numConvexes: give back the number of convexes</I>
+</TD></TR><TR><TD VALIGN=top><A HREF="#DOC.6.10"> <IMG BORDER=0 SRC=icon1.gif width="14" height="14"></A> <!1><A HREF="SpatialConvex.html">SpatialConvex</A>& </TD><TD><B>operator []</B> (size_t i)<br>
+<I> [] operator: give back convex</I>
+</TD></TR><TR><TD VALIGN=top><A HREF="#DOC.6.11"> <IMG BORDER=0 SRC=icon1.gif width="14" height="14"></A> void </TD><TD><B>read</B> (istream&)<br>
+<I> read from stream</I>
+</TD></TR><TR><TD VALIGN=top><A HREF="#DOC.6.12"> <IMG BORDER=0 SRC=icon1.gif width="14" height="14"></A> void </TD><TD><B>write</B> (ostream&) const <br>
+<I> write to stream</I>
+</TD></TR><TR><TD VALIGN=top><A HREF="#DOC.6.14"> <IMG BORDER=0 SRC=icon1.gif width="14" height="14"></A> static  void </TD><TD><B>ignoreCrLf</B> (istream &)<br>
+<I> A pointer to the index</I>
+</TD></TR></TABLE><TABLE BORDER>
+<DT><h3>Protected Fields</h3><DD><TR><TD VALIGN=top><A HREF="#DOC.6.15"> <IMG BORDER=0 SRC=icon1.gif width="14" height="14"></A> <!1><A HREF="ValVec.html">ValVec</A> <<!1><A HREF="SpatialConvex.html">SpatialConvex</A>>  </TD><TD><B>convexes_</B> <br>
+<I></I>
+</TD></TR></TABLE></DL>
+<A NAME="DOC.DOCU">
+<hr>
+ <h2> Documentation </h2>
+<BLOCKQUOTE>
+A spatial domain is a list of spatial convexes. So we can have
+really disjoint pieces of the sky defined by a domain.  
+
+</BLOCKQUOTE>
+<DL>
+
+<A NAME="SpatialDomain">
+<A NAME ="DOC.6.2">
+<DT><IMG BORDER=0 SRC=icon2.gif width="14" height="14"><TT><B>  SpatialDomain(const <!1><A HREF="SpatialIndex.html">SpatialIndex</A> * idx = 0)</B></TT>
+<DD> Constructor
+<DL></DL><P>
+<A NAME="~SpatialDomain">
+<A NAME ="DOC.6.3">
+<DT><IMG BORDER=0 SRC=icon2.gif width="14" height="14"><TT><B>  ~SpatialDomain()</B></TT>
+<DD> Destructor
+<DL></DL><P>
+<A NAME="setIndex">
+<A NAME ="DOC.6.4">
+<DT><IMG BORDER=0 SRC=icon2.gif width="14" height="14"><TT><B> void  setIndex(const <!1><A HREF="SpatialIndex.html">SpatialIndex</A> *)</B></TT>
+<DD> Set index pointer
+<DL></DL><P>
+<A NAME="add">
+<A NAME ="DOC.6.5">
+<DT><IMG BORDER=0 SRC=icon2.gif width="14" height="14"><TT><B> void  add(<!1><A HREF="SpatialConvex.html">SpatialConvex</A> &)</B></TT>
+<DD> Add a convex
+<DL></DL><P>
+<A NAME="simplify">
+<A NAME ="DOC.6.6">
+<DT><IMG BORDER=0 SRC=icon2.gif width="14" height="14"><TT><B> void  simplify()</B></TT>
+<DD> Simplify the Domain, remove redundancies
+<DL></DL><P>
+<A NAME="intersect">
+<A NAME ="DOC.6.1">
+<DT><IMG BORDER=0 SRC=icon2.gif width="14" height="14"><TT><B> bool  intersect(const <!1><A HREF="SpatialIndex.html">SpatialIndex</A> * idx, <!1><A HREF="BitList.html">BitList</A> & partial, <!1><A HREF="BitList.html">BitList</A> & full)</B></TT>
+<DD>Intersect with index. 
+Return the bitlist of the leafnodes that are
+partially and fully intersected by this domain. 
+<DL></DL><P>
+<A NAME="intersect">
+<A NAME ="DOC.6.7">
+<DT><IMG BORDER=0 SRC=icon2.gif width="14" height="14"><TT><B> bool  intersect(const <!1><A HREF="SpatialIndex.html">SpatialIndex</A> * idx, <!1><A HREF="ValVec.html">ValVec</A><uint64> & partial, <!1><A HREF="ValVec.html">ValVec</A><uint64> & full)</B></TT>
+<DD> Same intersection, but return vectors of ids instead of bitlists.
+<DL></DL><P>
+<A NAME="intersect">
+<A NAME ="DOC.6.8">
+<DT><IMG BORDER=0 SRC=icon2.gif width="14" height="14"><TT><B> bool  intersect(const <!1><A HREF="SpatialIndex.html">SpatialIndex</A> * idx, <!1><A HREF="ValVec.html">ValVec</A><uint64> & idlist)</B></TT>
+<DD> Same intersection, but return just a list of IDs not level depth
+<DL></DL><P>
+<A NAME="numConvexes">
+<A NAME ="DOC.6.9">
+<DT><IMG BORDER=0 SRC=icon2.gif width="14" height="14"><TT><B> size_t  numConvexes()</B></TT>
+<DD> numConvexes: give back the number of convexes
+<DL></DL><P>
+<A NAME="operator []">
+<A NAME ="DOC.6.10">
+<DT><IMG BORDER=0 SRC=icon2.gif width="14" height="14"><TT><B> <!1><A HREF="SpatialConvex.html">SpatialConvex</A>&  operator [](size_t i)</B></TT>
+<DD> [] operator: give back convex
+<DL></DL><P>
+<A NAME="read">
+<A NAME ="DOC.6.11">
+<DT><IMG BORDER=0 SRC=icon2.gif width="14" height="14"><TT><B> void  read(istream&)</B></TT>
+<DD> read from stream
+<DL></DL><P>
+<A NAME="write">
+<A NAME ="DOC.6.12">
+<DT><IMG BORDER=0 SRC=icon2.gif width="14" height="14"><TT><B> void  write(ostream&) const </B></TT>
+<DD> write to stream
+<DL></DL><P>
+<A NAME="index">
+<A NAME ="DOC.6.13">
+<DT><IMG BORDER=0 SRC=icon2.gif width="14" height="14"><TT><B> const  <!1><A HREF="SpatialIndex.html">SpatialIndex</A>*  index</B></TT>
+<DL></DL><P>
+<A NAME="ignoreCrLf">
+<A NAME ="DOC.6.14">
+<DT><IMG BORDER=0 SRC=icon2.gif width="14" height="14"><TT><B> static  void  ignoreCrLf(istream &)</B></TT>
+<DD> A pointer to the index
+<DL></DL><P>
+<A NAME="convexes_">
+<A NAME ="DOC.6.15">
+<DT><IMG BORDER=0 SRC=icon2.gif width="14" height="14"><TT><B> <!1><A HREF="ValVec.html">ValVec</A> <<!1><A HREF="SpatialConvex.html">SpatialConvex</A>>   convexes_</B></TT>
+<DL></DL><P>
+<A NAME="topBit_">
+<A NAME ="DOC.6.16">
+<DT><IMG BORDER=0 SRC=icon2.gif width="14" height="14"><TT><B> static  uint64  topBit_</B></TT>
+<DD> The vector of convexes
+<DL></DL><P></DL>
+<hr>
+ <DL><DT><B>This class has no child classes.</B></DL>
+<DL></DL><P><I><A HREF="aindex.html"> alphabetic index</A></I>  <I><A HREF="HIER.html"> hierarchy of classes</A></I><P><hr>
+
+<img SRC="rule.gif" width="400" height="5" >
+<h6>
+&copy;
+<A HREF = "http://www.sdss.jhu.edu/ScienceArchive/copyright.html">
+Copyright 2000
+</A>
+Peter Z. Kunszt, Alex S. Szalay, Aniruddha R. Thakar
+@ The Johns Hopkins University under the <a href="http://www.gnu.org/copyleft/gpl.txt">GNU GENERAL PUBLIC LICENSE</a><br>
+
+<a href="mailto:kunszt@pha.jhu.edu">Peter Z. Kunszt</a>,
+<br>
+</h6>
+
+</body>
+</html>
+
+<P Align=right><I>generated by <A HREF="http://www.zib.de/Visual/software/doc++/index.html">doc++</A></I>
+</BODY>

@@ -1,0 +1,220 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=iso-8859-1">
+<title>Spherical and HTM Primer</title>
+<link href="../styles/skystyles.css" rel="stylesheet" type="text/css">
+<link href="../styles/tabs.css" rel="stylesheet" type="text/css">
+<style type="text/css">
+<!--
+.style1 {
+	color: #CC3300;
+	font-weight: bold;
+}
+-->
+</style>
+</head><body>
+<!-- George 1.0 -->
+<!----------------------------------------   TABS -->
+<div class="tabs">
+  <ul>
+    <li><a href="../index.html"><span>HTM</span></a></li>
+    <li id="current"><a href="./tut_primer.html"><span>Spatial Constructs </span></a></li>
+    <li><a href="./tut_covermap.html"><span>Covermap</span></a></li>
+    <li><a href="./tut_queries.html"><span>Queries</span></a></li>
+   
+	<li><a href="./regiongrammar.html"><span>Grammar</span></a></li>
+	<li><a href="./tut_install.html"><span>Installation</span></a></li>
+	 <li><a href="../HtmAPI/html/index.html"><span>API</span></a></li>
+	  <li><a href="../../default.aspx"><span>Home</span></a></li>
+</ul></div>
+<!----------------------------------------   END TABS -->
+<h1>Thinking In Space</h1>
+<p>
+The motivation behind the HTM is to organize objects distributed on a surface of a sphere well.
+We want to maintain  much information
+  about the relative position of things, preserve the topology of the sphere and have a way of
+  "indexing" these objects so that they can be stored and retrieved in an orderly manner and with a great deal of
+efficiency.</p>
+<p>These pages introduce the concepts behind organizing regions of interest and
+    other spatial constructs, and show you how to formulate HTM queries with them.
+	You will also
+      learn how to use these spatial constructs in your programs
+	  as well as database queries using SQL with the necessary extensions you can find here too.	  </p>
+<ul>
+&bull;&nbsp;Halfspaces, Convexes and Regions <br />
+&bull;&nbsp;HTM<br />
+<ul>
+Converting between location and HTM<br />
+Covermap of a Region
+</ul>
+&bull;&nbsp;How to use covermaps for  spatial queries<br />
+</ul>
+The <em>Region</em>, as defined below, represents an area on the sphere.
+The area may contain one or more connected components. A Region must have a finite area, therefore, 
+we do not consider a single or any finite (greater than zero) number of points a Region. A Region with
+no points in it has an area equal to zero, and is called the Null Region.  Regions
+are the result of making unions of Convexes, and the Convex is the Intersection of a
+number of Halfspaces. Halfspace is the basic building block of every area. The rest
+of this primer is about this.
+<p -\>
+
+<h2><a class="anchor" name="HALFSPACE"> HALFSPACE</a></h2>
+The halfspace is the basic building block of
+<a class="el" href=#CONVEX>Convexes</a>
+and
+<a class="el" href=#REGION>Region</a>.
+
+We get one by cutting though a unit sphere
+with a plane. The plane may or may not slice through the middle of the
+sphere. In any case, unless the plane entirely misses the sphere, 
+two regions, or two spherical caps of different sizes result.
+We pick one of these by associating it with the orientation of the plane,
+that is, the direction of the plane's surface normal.
+In the diagram below, the smaller cap is
+obtained by a plane whose surface normal points up, and is moved about
++0.8 units along this direction.
+<table>
+ <tr>
+  <td>
+    <img src="../images/halfspace.png" alt="Picture of a halfspace">
+  </td>
+  <td>&nbsp;</td>
+  <td>
+    <img src="../images/topcap.png" alt="Picture of a remaining cap"></td>
+  </tr>
+  <tr>
+   <td align="center"> <strong>Figure 1a. Two Halfspaces</strong> </td>
+   <td>&nbsp;</td>
+   <td align="center"> <strong>Figure 1b. Depiction of the "top" Halfspace<br />{(0, 0, 1), 0.85}
+</strong> </td>
+  </tr>
+</table>
+The other, larger bottom portion is cut by a plane, whose surface
+normal points <em>down</em> and is moved -0.8 units along the surface normal.
+The negative number indicates that the shifting is in the opposite direction 
+of the surface normal.  Without arrows or some visual
+indication of the orientation of the planes, they seem identical, as in Figure
+1.a. Figure 1b demonstrates how this tutorial depicts halfspaces.
+The halfspace in question will be white or blank, and colors applied to
+the part of the sphere that is <em>subtracted</em>, that is not considered
+as part of the halfspace.
+This is done for practical considerations, because the intersection of many 
+halfspaces will stay white where the parts that are not in the intersection
+will be filled with potentially many colors. Take a look at the 
+<a href="#SAMPLES">Samples</a>.
+<p />
+A simple search cone is the intersection of the cone with the unit sphere,
+which is also defined by a plane slicing off the part of the sphere
+that lies within the cone. If the cutting plane is one unit away from the
+origin in the direction of the surface normal
+then it slices off nothing, but merely touches the sphere.
+So, the area associated with this special case is null. The whole sphere is
+obtained if the cutting plane is moved a distance of -1, that is 1 in the
+direction opposite to the surface normal. 
+<p />
+The specification of a halfspace therefore consists of a direction
+<code>(x, y, z)</code> and an offset&nbsp; <code>-1 <= D <= +1</code>.
+Since the order in a tuple is significant, we simply denote the halfspace
+<em>h</em>
+as a 4-tuple:
+<div class="fragment" align="left">
+h = (x, y, z, D)
+</div>
+
+<h2><a class="anchor" name="CONVEX"> CONVEX</a></h2>
+
+A<em> Convex</em> is the intersection of any finite number 
+of <a class="el" href=#HALFSPACE>Halfspaces</a>. Most simple shapes,
+like spherical polygons, rectangles are convexes.
+<p />
+The specification of a convex consists of a list of halfspaces:
+<div class="fragment" align="left">
+c = {h1, h2, ... ,hn}
+</div>
+
+
+<h2><a class="anchor" name="REGION"> REGION</a></h2>
+
+A Region is any area on the surface of a sphere. It can be zero, one or more 
+contiguous "areas", that is, several connected components. 
+For mathematical consistency, the region has either a finite area,
+or it is empty. Therefore, a single point is 
+equivalent to an empty region, no matter what the meaning of the word
+<em>is</em> is. As you will see, a region can be any shape you can think
+of on the sphere. Its simplest form is the inside of a circle on
+the surface of a sphere. Examples of more complex shapes are polygons,
+rectangles bracketed by lines of latitude and longitude, a band circumscribing
+the whole sphere, which is not technically a spherical polygon.
+<p -/>
+Simply put, a <em>Region</em> is a (set theoretical) union of a number
+(including 0) of <a class="el" href="#CONVEX">Convexes</a>.
+The specification of a region consists of a list of convexes
+<div class="fragment" align="left">
+r = {c1, c2, ... ,cn}
+</div>
+<p />
+In our code samples we will always operate on
+<a class="el" href=#REGION>regions</a>.
+<h2><a class="anchor" name="SHAPES"> SHAPES AND THEIR DESCRIPTIONS</a></h2>
+<p> Most of us would rather think in terms of spherical polygons, circles and rectangles,
+rather than unions of convexes.
+For this reason, there is a mechanism that allows a user to specify a region
+in terms of familiar shapes.
+There is a simple text-based language, which is easy to read and edit by humans.
+The application programmer would use a class of objects called a Parser that takes
+a string that describes the region, and produces a 
+Region object.
+</p><p>
+ The details of the language and its grammar are found <a href="HtmPrimer/regiongrammar.html">here</a>.
+The Examples below will include C# code for generating regions using Region, Convex and Halfspace
+objects as well as the text description.
+</p>
+<h2><a class="anchor" name="SAMPLES"> EXAMPLES </a></h2>
+The notion of Regions, Convexes and Halfspaces is best illustrated with
+graphics examples and sample code using the API. All examples will have
+two parts, where the first one deals with Region, Convex and Halfspace 
+in their pure form. The second part addresses operations relating to HTMs.
+On first reading, you can skip
+the HTM parts and revisit the samples after you have familiarized yourself
+with HTM.
+<h3> Example: <a class="el" href="./circle.html">Circle</a> (aka &quot;search-cone&quot;)</h3>
+This is a very simple region consisting of a single convex of one halfspace.
+For most users, a circular search area is best described by the center
+and radius rather than an offset of the cutting plane.
+
+<h3> Example: <a class="el" href="./band.html">Band</a></h3>
+To get a band or ring around the globe, take the intersection of two overlapping halfspaces.
+
+<h3>Example: <a class="el" href="./rectangle.html">Rectangle</a></h3>
+This is a simple box consisting of ra/dec (or lat/lon) limits.
+lines of equal declination (latitude) are (generally) small circles parallel
+to the equator. The equal lines of right ascension (longitude) are meridiens,
+which are great circles. The four halfspaces defined by these circles
+are oriented so that they "trap" the rectangular region of interest. This
+is nothing more than the intersection of four halfspaces, therefore it can
+be represented as a single convex.
+
+
+<h3> Example: <a class="el" href="./polygon.html">Polygon</a></h3>
+The convex polygon is made up of great circle segments of various lengths.
+Each great circle defines a halfspace, and they are oriented so, that they
+"trap" the region of interest in a fashion similar to the rectangle.
+
+
+<h2><a class="anchor" name="API">API</a></h2>
+
+The Spherical.HTM library, package or assembly has all the C# classes
+that let you create and manipulate regions and covermaps. See the
+<a href="../HtmAPI/html/index.html">API</a> for the full online documentation
+
+
+<h2><a class="anchor" name="SQL">SQL Extensions</a></h2>
+
+These functions are made available to SQL Server 2005 through extensions described in 
+ <strong>TBD</strong><!-- #BeginLibraryItem "/htm/Library/lastchangefooter.lbi" -->
+<! ----------- FOOTER -->
+<hr size="1">
+<address style="align: right;">
+<small> Last update May 29, 2007  Gy&ouml;rgy Fekete <font color="red">version 3.1.2</font> </small>
+</address>
+<!-- #EndLibraryItem --></body>
+</html>

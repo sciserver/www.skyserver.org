@@ -1,0 +1,93 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=iso-8859-1">
+<title>HTM: Spatial Queries-2</title>
+<link href="../styles/skystyles.css" rel="stylesheet" type="text/css">
+<link href="../styles/tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- George 1.0 -->
+<!----------------------------------------   TABS -->
+<div class="tabs">
+  <ul>
+    <li><a href="../index.html"><span>HTM</span></a></li>
+    <li><a href="./tut_primer.html"><span>Spatial Constructs</span></a></li>
+    <li><a href="../HtmPrimer/tut_covermap.html"><span>Covermap</span></a></li>
+    <li id="current"><a href="../HtmPrimer/tut_queries.html"><span>Queries</span></a></li>
+   
+	<li><a href="../HtmPrimer/regiongrammar.html"><span>Grammar</span></a></li>
+	<li><a href="../HtmPrimer/tut_install.html"><span>Installation</span></a></li>
+	 <li><a href="../HtmAPI/html/index.html"><span>API</span></a></li>
+	  <li><a href="../../default.aspx"><span>Home</span></a></li>
+</ul></div>
+<!----------------------------------------   END TABS -->
+<h1>Spatial Queries<br />
+ part 2 </h1>
+<h2><a class="anchor" name="Changeme1"> 
+
+Query with complex regions </a></h2>
+<p>
+Sometimes the region is not a simple circle, so you must use the text interface to define one.
+Let's look at a probable approximation of <a href="../HtmExamples/california.html">California</a> as a union of a rectangle and a polygon defined as the convex
+hull of some well-identifiable points</p>
+<div class="fragment">
+<pre class="fragment">declare @californiaRegion varchar(max)
+set @californiaRegion = 'REGION '
+      + 'rect  latlon 39  -125 ' -- nortwest corner
+      + '42    -120 '            -- center of Lake Tahoe 
+      + 'chull latlon 39 -124 '  -- Pt. Arena
+      + '39    -120 '    -- Lake  tahoe.
+      + '35    -114.6 '  -- start Colorado River
+      + '34.3  -114.1 '  -- Lake Havasu
+      + '32.74 -114.5 '  -- Yuma
+      + '32.53 -117.1 '  -- San Diego
+      + '33.2  -119.5 '  -- San Nicholas Is
+      + '34    -120.5 '  -- San Miguel Is.
+      + '34.57 -120.65 ' -- Pt. Arguelo
+      + '36.3  -121.9 '  -- Pt. Sur 
+      + '36.6  -122.0 '  -- Monterey
+      + '38    -123.03 ' -- Pt. Rayes
+</pre>
+</div>
+<p>
+.
+<div class="fragment">
+<pre class="fragment">select PlaceName from Place 
+where HtmID in 
+(select distinct SI.objID
+  from <strong>fHtmCoverRegion(@californiaRegion)</strong>  
+  loop join SpatialIndex SI<br>  on  <strong>SI.HtmID between HtmIdStart and HtmIdEnd</strong> 
+  and SI.type = 'P'
+  join place P on SI.objID = P.HtmID
+  cross join fHtmRegionToTable(@californiaRegion) Poly
+  group by SI.objID, Poly.convexID 
+  having <strong>min(SI.x*Poly.x + SI.y*Poly.y + SI.z*Poly.z - Poly.d) >= 0) </strong>   
+OPTION (FORCE ORDER)
+</pre>
+</div>
+ 
+<p> The expression inside the min() is a way to test whether or not
+a point is inside the region. Recall, that a point is in the region if
+it is inside at least one convex, and it inside a convex if it is 
+inside all the halfspaces. The &quot;coarse filter&quot; is 
+performed by the condition on the join between the covermap and the SpatialIndex.
+A query with identical results, but without the coarse filtering of the covermap
+is expressed as
+</p>
+<div class="fragment">
+  <pre class="fragment">select PlaceName  from Place 
+where HtmID in 
+(select distinct SI.objID 
+  from SpatialIndex as SI, fHtmRegionToTable(@californiaRegion) as Poly
+  group by SI.objID, Poly.convexID 
+  having min(SI.x*Poly.x + SI.y*Poly.y + SI.z*Poly.z - Poly.d) >= 0)    
+OPTION (FORCE ORDER)</pre> 
+</div>
+
+<h3><a href="./tut_queries.html"> Back ...</a><a href="./tut_queries3.html"> Next ...</a></h3>
+<!-- #BeginLibraryItem "/htm/Library/lastchangefooter.lbi" -->
+<! ----------- FOOTER -->
+<hr size="1">
+<address style="align: right;">
+<small> Last update May 29, 2007  Gy&ouml;rgy Fekete <font color="red">version 3.1.2</font> </small>
+</address>
+<!-- #EndLibraryItem --></body>
+</html>

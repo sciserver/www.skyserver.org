@@ -1,0 +1,76 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=iso-8859-1">
+<title>HTM Covermap Examples</title>
+<link href="../styles/skystyles.css" rel="stylesheet" type="text/css">
+<link href="../styles/tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- George 1.0 --><!-- #BeginLibraryItem "/htm/Library/examplenav.lbi" -->
+<!----------------------------------------   TABS -->
+<div class="tabs">
+  <ul>
+    <li><a href="../index.html"><span>HTM<br />&nbsp;</span></a></li>
+	<li><a href="sdssRegions.html"><span>SDSS Regions<br />&nbsp;</span></a></li>
+    <li><a href="tinydisk.html"><span>Disk<br />&nbsp;</span></a></li>
+	<li><a href="ColoradoPolygon.html"><span>Colorado<br />Polygon</span></a></li>
+	<li><a href="ColoradoRectangle.html"><span>Colorado<br />Rectangle</span></a></li>
+	<li><a href="cube.html"><span>Cube<br />&nbsp;</span></a></li>
+	<li><a href="masks.html"><span>Mask<br />&nbsp;</span></a></li>
+	<li><a href="utahrects.html"><span>Utah<br />&nbsp;</span></a></li>
+	<li><a href="california.html"><span>California<br />&nbsp;</span></a></li>
+	<li><a href="testRegions.html"><span>Tests<br />&nbsp;</span></a></li>
+	<li><a href="extremeRegions.html"><span>Extreme<br />&nbsp;</span></a></li>
+	<li><a href="georgiachull.html"><span>Chull<br />&nbsp;</span></a></li>
+</ul></div>
+<!----------------------------------------   END TABS -->
+<!-- #EndLibraryItem --><h1>Disk</h1>
+<p>
+<table width="100%"  border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="37%"><img src="../images/smalldiskpov.png" alt="" name="example" width="320" height="240" id="example" /></td>
+<td width="63%" align="left" valign="top">
+This convex consists a single halfspace specification. The cutting plane just barely cuts into the sphere.
+</td>
+</tr>
+</table>
+<p>&nbsp;</p>
+<h2>SPECIFICATION</h2>
+<div class="fragment">
+<pre class="fragment">
+CIRCLE J2000 53.1299 -27.8761 36 
+</pre>
+</div>
+<h2>NORMAL FORM</h2>
+<div class="fragment">
+<pre class="fragment">
+REGION CONVEX
+0.53037894302825328 0.70716672082923582 -0.46756112514179204 0.99994516936551214
+</pre>
+</div>
+<h2>C# CODE</h2>
+<div class="fragment">
+<pre class="fragment">
+Region reg = new Region();
+Halfspace h = new Halfspace(53.1299, -27.8761, 36);
+reg.Add(new Convex(h));
+List&lt;Int64Pair&gt; rangelist = Cover.HidRange(reg);
+</pre>
+</div>
+<h2>COVERMAP</h2>
+<div class="fragment"><pre class="fragment">
+9868241010688, 9868257787903
+9868291342336, 9868308119551
+9868324896768, 9868358451199
+9868459114496, 9868475891711
+9876562509824, 9876612841471
+9876679950336, 9876814168063
+</pre>
+</div>
+<p>&nbsp;</p>
+<!-- #BeginLibraryItem "/Library/gyurifooter.lbi" -->
+<! ----------- FOOTER -->
+<hr size="1">
+<address style="align: right;">
+<small> Last update March 29, 2007  Gy&ouml;rgy Fekete <font color="red">version 3.1.2</font> </small>
+</address>
+<!-- #EndLibraryItem --></body>
+</html>

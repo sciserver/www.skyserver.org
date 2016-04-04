@@ -1,0 +1,65 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=iso-8859-1">
+<title>Rectangle Example</title>
+<link href="../styles/skystyles.css" rel="stylesheet" type="text/css">
+<link href="../styles/tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- George 1.0 -->
+<!----------------------------------------   TABS -->
+<div class="tabs">
+  <ul>
+    <li>
+<a href="../htmetc/circle.html"><span>circle</span></a></li>
+<li><a href="../htmetc/band.html"><span>band</span></a></li>
+    <li><a href="../htmetc/rectangle.html"><span>rectangle</span></a></li>
+    <li id="current"><a href="../htmetc/polygon.html"><span>polygon</span></a></li>
+    <li><a href="../htmetc/index.html"><span>Tutorial home</span></a></li>
+</ul></div>
+<!----------------------------------------   END TABS -->
+<h2>Polygon</h2>
+<p>
+The convex polygon is made up of great circle segments of various lengths.
+Each great circle defines a halfspace, and they are oriented so, that they
+"trap" the region of interest in a fashion similar to the rectangle.
+<p />
+The white band is created by the intersection of four halfspaces each of which
+is a hemisphere. This is almost like the rectangle, but note that the
+horizontal extensions pinch somewhere, because the edges in this case
+are all great circle segments.
+
+<table align="center">
+ <tr>
+  <td align="center">
+    <img src="../images/rectaspoly.png" alt="Picture of a polygon">
+  </td>
+ </tr>
+  <tr>
+   <td align="center"> <strong>Figure 4. 4 halfspaces that define a polygon</strong>
+   </td>
+  </tr>
+</table>
+
+
+<div class="fragment"><pre class="fragment">
+using Spherical;
+/* .... */
+namespace MySpace {
+    public class MyApp {
+        public void MyFunc(){
+            Region r = new Region();
+            Convex c = new Convex();
+	    /* TBAdded */
+            r.Add(c);
+	    /* ... */
+        }
+    }
+}
+</pre></div>
+<!-- #BeginLibraryItem "/Library/gyurifooter.lbi" -->
+<! ----------- FOOTER -->
+<hr size="1">
+<address style="align: right;">
+<small> Last update March 29, 2007  Gy&ouml;rgy Fekete <font color="red">version 3.1.2</font> </small>
+</address>
+<!-- #EndLibraryItem --></body>
+</html>

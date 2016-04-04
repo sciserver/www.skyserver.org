@@ -1,0 +1,72 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=iso-8859-1">
+<title>Sample Example</title>
+<link href="../styles/skystyles.css" rel="stylesheet" type="text/css">
+<link href="../styles/tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- George 1.0 -->
+<!----------------------------------------   TABS -->
+<div class="tabs">
+  <ul>
+    <li id="current">
+<a href="circle.html"><span>circle</span></a></li>
+<li><a href="band.html"><span>band</span></a></li>
+    <li><a href="rectangle.html"><span>rectangle</span></a></li>
+    <li><a href="polygon.html"><span>polygon</span></a></li>
+    <li><a href="../index.html"><span>Tutorial home</span></a></li>
+</ul></div>
+<!----------------------------------------   END TABS -->
+<h2>Circle</h2>
+<p>
+
+This is a very simple region consisting of a single convex of one halfspace.
+For most users, a circular search area is best described by the center
+and radius rather than an offset of the cutting plane. The API has ways
+of creating Halfspaces like this, given the RA/DEC in degrees 
+and the radius of circle expressed in arc minutes.
+
+
+<table align="center">
+ <tr>
+  <td align="center">
+    <img src="../images/topcap.png" alt="Picture of a halfspace">
+  </td>
+ </tr>
+  <tr>
+   <td align="center"> <strong>Figure 2. 3600 arc min wide halfspace</strong>
+   </td>
+  </tr>
+</table>
+
+
+<div class="fragment">
+  <pre class="fragment">
+using Spherical;
+using Spherical.Htm;
+
+/* .... */
+namespace MySpace {
+    public class MyApp {
+        public void MyFunc(){
+            Region r = new Region(new Convex(new Halfspace(0.0, 90.0, 1800)), false);
+            /* ... */
+        }
+        public void MyAlternate(){
+            Region r = new Region();
+            Convex c = new Convex();
+            Halfspace h = new Halfspace(0.0, 90.0, 1800);
+            c.Add(h);
+            r.Add(c);
+        }
+    }
+}
+</pre>
+</div>
+<!-- #BeginLibraryItem "/htm/Library/lastchangefooter.lbi" -->
+<! ----------- FOOTER -->
+<hr size="1">
+<address style="align: right;">
+<small> Last update May 29, 2007  Gy&ouml;rgy Fekete <font color="red">version 3.1.2</font> </small>
+</address>
+<!-- #EndLibraryItem --></body>
+</html>
